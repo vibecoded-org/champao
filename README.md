@@ -98,6 +98,16 @@ bun run build
 
 Production artifacts are written to `dist/champao/browser/`.
 
+### Build for GitHub Pages
+
+```bash
+bun run build:gh-pages
+```
+
+Outputs directly to `docs/` at the repo root, which GitHub Pages can serve from the `main` branch. Enable it under **Settings → Pages → Source: Deploy from a branch → `main` / `docs`**.
+
+> **Note:** `baseHref` is set to `./` (relative). If your app uses deep Angular routes and you see 404s on page refresh, set `baseHref` to your repository path (e.g. `/champao/`) in `angular.json` under the `gh-pages` configuration.
+
 ### Tests
 
 ```bash
