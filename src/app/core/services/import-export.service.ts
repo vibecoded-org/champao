@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChampionshipState } from '../models/championship.model';
+import { ChampionshipState, CompetitionMode } from '../models/championship.model';
 import { CardEvent, Fixture, GoalEvent } from '../models/fixture.model';
 import { Player } from '../models/player.model';
 import { RankingCriterion, RankingField } from '../models/ranking.model';
@@ -34,7 +34,7 @@ export class ImportExportService {
 
   import(json: string): ImportResult {
     try {
-      const parsed = JSON.parse(json) as Partial<ChampionshipState> & { scorers?: Array<{ id: string; teamId: string; name: string }> };
+      const parsed = JSON.parse(json) as Partial<ChampionshipState> & { fixturesByCompetition?: { league?: Fixture[]; cup?: Fixture[] } };
       const errors: string[] = [];
 
       if (!parsed || typeof parsed !== 'object') {
@@ -45,8 +45,8 @@ export class ImportExportService {
         errors.push('teams must be an array.');
       }
 
-      if (!Array.isArray(parsed?.fixtures)) {
-        errors.push('fixtures must be an array.');
+      if (!Array.isArray(parsed?.fixturesByCompetition?.league)) {
+        errors.push('fixturesByCompetition.league must be an array.');
       }
 
       if (!parsed?.config || typeof parsed.config !== 'object') {
@@ -61,7 +61,7 @@ export class ImportExportService {
       const players = Array.isArray(parsed.players)
         ? (parsed.players ?? []).filter((player): player is Player => Boolean(player?.id && player?.teamId && player?.name))
         : [];
-      const fixtures = (parsed.fixtures ?? [])
+      const parseFixtures = (source: Fixture[]) => source
         .filter((fixture): fixture is Fixture => Boolean(fixture?.id && fixture?.homeTeamId && fixture?.awayTeamId))
         .map((fixture) => ({
           id: fixture.id,
@@ -106,6 +106,13 @@ export class ImportExportService {
           )
         }));
 
+      const leagueFixtures = Array.isArray(parsed.fixturesByCompetition?.league)
+        ? parseFixtures(parsed.fixturesByCompetition.league as Fixture[])
+        : [];
+      const cupFixtures = Array.isArray(parsed.fixturesByCompetition?.cup)
+        ? parseFixtures(parsed.fixturesByCompetition.cup as Fixture[])
+        : [];
+
       const criteriaFromPayload = parsed.config?.rankingCriteria;
       const rankingCriteria: RankingCriterion[] = Array.isArray(criteriaFromPayload)
         ? criteriaFromPayload.filter(
@@ -114,11 +121,14 @@ export class ImportExportService {
           )
         : [];
 
+      const rawMode = parsed.config?.mode as string | undefined;
+      const mode: CompetitionMode = rawMode === 'league' || rawMode === 'cup' ? rawMode : 'both';
+
       const state: ChampionshipState = {
-        version: 2,
+        version: 3,
         config: {
           name: String(parsed.config?.name ?? 'Championship'),
-          format: parsed.config?.format === 'cup' ? 'cup' : 'league',
+          mode,
           league: {
             homeAndAway: Boolean(parsed.config?.league?.homeAndAway),
             pointsWin: Number(parsed.config?.league?.pointsWin ?? 3),
@@ -141,7 +151,10 @@ export class ImportExportService {
         },
         teams,
         players,
-        fixtures
+        fixturesByCompetition: {
+          league: leagueFixtures,
+          cup: cupFixtures
+        }
       };
 
       return { ok: true, state };

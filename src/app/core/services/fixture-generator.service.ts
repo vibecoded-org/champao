@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChampionshipConfig } from '../models/championship.model';
+import { CupConfig } from '../models/championship.model';
 import { Fixture } from '../models/fixture.model';
 import { Team } from '../models/team.model';
 
@@ -82,7 +82,7 @@ export class FixtureGeneratorService {
     return [...singleLeg, ...returnLeg];
   }
 
-  generateCup(teams: Team[], config: ChampionshipConfig): Fixture[] {
+  generateCup(teams: Team[], cupConfig: CupConfig): Fixture[] {
     const working = shuffle(teams);
     while ((working.length & (working.length - 1)) !== 0) {
       working.push({ id: `${byeTeamId}-${working.length}`, name: 'BYE' });
@@ -108,7 +108,7 @@ export class FixtureGeneratorService {
             cards: []
           });
           const isFinalRound = round === rounds;
-          const shouldCreateReturnLeg = config.cup.homeAndAway && (!config.cup.uniqueFinalMatch || !isFinalRound);
+          const shouldCreateReturnLeg = cupConfig.homeAndAway && (!cupConfig.uniqueFinalMatch || !isFinalRound);
           if (shouldCreateReturnLeg && !home.id.includes(byeTeamId) && !away.id.includes(byeTeamId)) {
             fixtures.push({
               id: id('cup'),
@@ -134,6 +134,22 @@ export class FixtureGeneratorService {
             goals: [],
             cards: []
           });
+          const isFinalRound = round === rounds;
+          const shouldCreateReturnLeg = cupConfig.homeAndAway && (!cupConfig.uniqueFinalMatch || !isFinalRound);
+          if (shouldCreateReturnLeg) {
+            fixtures.push({
+              id: id('cup'),
+              round,
+              matchNumber: match + 1,
+              homeTeamId: `WINNER_R${round - 1}_M${match * 2 + 2}`,
+              awayTeamId: `WINNER_R${round - 1}_M${match * 2 + 1}`,
+              homeSourceMatch: { round: round - 1, matchNumber: match * 2 + 2 },
+              awaySourceMatch: { round: round - 1, matchNumber: match * 2 + 1 },
+              status: 'not-finished',
+              goals: [],
+              cards: []
+            });
+          }
         }
       }
     }

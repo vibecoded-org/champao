@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { CheckCircle2, Clock, LucideAngularModule } from 'lucide-angular';
 import { TranslatePipe } from '../../core/pipes/t.pipe';
 import { I18nService } from '../../core/services/i18n.service';
 import { Fixture } from '../../core/models/fixture.model';
@@ -6,12 +7,14 @@ import { Team } from '../../core/models/team.model';
 
 @Component({
   selector: 'app-fixture-card',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, LucideAngularModule],
   templateUrl: './fixture-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FixtureCardComponent {
   protected readonly i18n = inject(I18nService);
+  protected readonly checkIcon = CheckCircle2;
+  protected readonly clockIcon = Clock;
   readonly fixture = input.required<Fixture>();
   readonly teamsMap = input.required<Map<string, Team>>();
   readonly suspendedCount = input<number>(0);
@@ -40,5 +43,13 @@ export class FixtureCardComponent {
       return teamId.startsWith('WINNER_') ? teamId.replaceAll('_', ' ') : this.i18n.translate('common.bye');
     }
     return `${team.flag || '⚽'} ${team.displayName || team.name}`;
+  }
+
+  protected penaltyWinnerLabel(): string | null {
+    const winnerId = this.fixture().penaltyWinnerTeamId;
+    if (!winnerId) {
+      return null;
+    }
+    return this.teamLabel(winnerId);
   }
 }

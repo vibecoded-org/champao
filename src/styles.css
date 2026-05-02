@@ -37,11 +37,27 @@
 }
 
 html {
-  font-size: 18px;
+  font-size: 16px;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 18px;
+  }
 }
 
 body {
   min-height: 100vh;
+}
+
+/* Browser defaults that cause horizontal overflow on mobile */
+fieldset {
+  min-width: 0;
+}
+
+/* Prevent horizontal page scroll from any overflowing child */
+body {
+  overflow-x: hidden;
 }
 
 :focus-visible {

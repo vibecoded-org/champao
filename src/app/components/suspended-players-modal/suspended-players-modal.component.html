@@ -1,6 +1,9 @@
 @if (open()) {
   <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'suspended.modalTitle' | t">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="close.emit()">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="text-lg font-bold">{{ 'suspended.modalTitle' | t }}</h3>
       @if (suspendedPlayers().length === 0) {
         <p class="mt-3 text-sm text-base-content/70">{{ 'suspended.empty' | t }}</p>

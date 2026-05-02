@@ -1,47 +1,79 @@
 <div class="space-y-4">
-  @if (store.fixturesByRound().length === 0) {
-    <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'fixtures.empty' | t }}</div>
-  } @else {
-    <div class="space-y-4">
-      @for (round of store.fixturesByRound(); track round[0]) {
-        <app-fixture-round
-          [round]="round[0]"
-          [label]="roundLabel(round[0])"
-          [fixtures]="round[1]"
-          [teamsMap]="teamsMap()"
-          [suspendedCountByFixtureId]="suspendedCountByFixtureId()"
-          (openFixture)="openFixture($event)"
-          (openSuspensions)="openSuspensionsForFixture($event)"
-        />
-      }
+  @if (store.appScope() === 'total') {
+    <div class="rounded-box border border-warning/40 bg-warning/10 p-4">
+      <h3 class="font-semibold">{{ 'fixtures.scopePromptTitle' | t }}</h3>
+      <p class="mt-1 text-sm text-base-content/80">{{ 'fixtures.scopePromptDescription' | t }}</p>
+      <div class="mt-3 flex gap-2">
+        <button class="btn btn-sm" type="button" (click)="pickScope('league')">{{ 'scope.league' | t }}</button>
+        <button class="btn btn-sm" type="button" (click)="pickScope('cup')">{{ 'scope.cup' | t }}</button>
+      </div>
     </div>
+  } @else if (selectedCompetitionScope(); as competitionScope) {
+    @if (store.fixturesByRound(competitionScope).length === 0) {
+      <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'fixtures.empty' | t }}</div>
+    } @else {
+      <div class="space-y-3 sm:space-y-4">
+        @for (group of fixturesByRoundWithLegs(); track group.round) {
+          @if (group.secondLegs.length > 0) {
+            <app-fixture-round
+              [round]="group.round"
+              [label]="roundLabel(group.round) + ' – ' + ('fixtures.firstLeg' | t)"
+              [fixtures]="group.firstLegs"
+              [teamsMap]="teamsMap()"
+              [suspendedCountByFixtureId]="suspendedCountByFixtureId()"
+              (openFixture)="openFixture($event)"
+              (openSuspensions)="openSuspensionsForFixture($event)"
+            />
+            <app-fixture-round
+              [round]="group.round"
+              [label]="roundLabel(group.round) + ' – ' + ('fixtures.secondLeg' | t)"
+              [fixtures]="group.secondLegs"
+              [teamsMap]="teamsMap()"
+              [suspendedCountByFixtureId]="suspendedCountByFixtureId()"
+              (openFixture)="openFixture($event)"
+              (openSuspensions)="openSuspensionsForFixture($event)"
+            />
+          } @else {
+            <app-fixture-round
+              [round]="group.round"
+              [label]="roundLabel(group.round)"
+              [fixtures]="group.firstLegs"
+              [teamsMap]="teamsMap()"
+              [suspendedCountByFixtureId]="suspendedCountByFixtureId()"
+              (openFixture)="openFixture($event)"
+              (openSuspensions)="openSuspensionsForFixture($event)"
+            />
+          }
+        }
+      </div>
+    }
+
+    <app-match-modal
+      [fixture]="selectedFixture()"
+      [allFixtures]="store.fixtures(competitionScope)"
+      [format]="competitionScope"
+      [cupConfig]="store.config().cup"
+      [teamsMap]="teamsMap()"
+      [players]="store.players()"
+      [suspendedPlayerIds]="suspendedPlayerIds()"
+      [suspendedDetails]="suspendedDetailsForSelectedFixture()"
+      (close)="closeFixture()"
+      (statusChange)="store.setFixtureStatus(competitionScope, $event.fixtureId, $event.status)"
+      (addGoal)="onAddGoal($event)"
+      (removeGoal)="store.removeGoal(competitionScope, $event.fixtureId, $event.goalId)"
+      (addCard)="onAddCard($event)"
+      (removeCard)="store.removeCard(competitionScope, $event.fixtureId, $event.cardId)"
+      (setPenaltyWinner)="onSetPenaltyWinner($event)"
+    />
+
+    <app-suspended-players-modal
+      [open]="!!suspensionsModalFixtureId()"
+      [players]="store.players()"
+      [suspendedPlayerIds]="suspendedPlayerIdsForModal()"
+      [suspendedDetails]="suspendedDetailsForModal()"
+      [allFixtures]="store.fixtures(competitionScope)"
+      [teamsMap]="teamsMap()"
+      (close)="closeSuspensionsModal()"
+    />
   }
-
-  <app-match-modal
-    [fixture]="selectedFixture()"
-    [allFixtures]="store.fixtures()"
-    [format]="store.config().format"
-    [cupConfig]="store.config().cup"
-    [teamsMap]="teamsMap()"
-    [players]="store.players()"
-    [suspendedPlayerIds]="suspendedPlayerIds()"
-    [suspendedDetails]="suspendedDetailsForSelectedFixture()"
-    (close)="closeFixture()"
-    (statusChange)="store.setFixtureStatus($event.fixtureId, $event.status)"
-    (addGoal)="onAddGoal($event)"
-    (removeGoal)="store.removeGoal($event.fixtureId, $event.goalId)"
-    (addCard)="onAddCard($event)"
-    (removeCard)="store.removeCard($event.fixtureId, $event.cardId)"
-    (setPenaltyWinner)="onSetPenaltyWinner($event)"
-  />
 </div>
-
-<app-suspended-players-modal
-  [open]="!!suspensionsModalFixtureId()"
-  [players]="store.players()"
-  [suspendedPlayerIds]="suspendedPlayerIdsForModal()"
-  [suspendedDetails]="suspendedDetailsForModal()"
-  [allFixtures]="store.fixtures()"
-  [teamsMap]="teamsMap()"
-  (close)="closeSuspensionsModal()"
-/>

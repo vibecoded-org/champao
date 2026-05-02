@@ -4,13 +4,13 @@
       <table class="table table-zebra">
         <thead>
           <tr>
-            <th>#</th><th>{{ 'common.team' | t }}</th><th>GP</th><th>Pts</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>YC</th><th>RC</th><th>{{ 'common.cards' | t }}</th><th>Eff%</th>
+            <th>#</th><th>{{ 'common.team' | t }}</th><th>GP</th><th>Pts</th><th>{{ 'common.winsShort' | t }}</th><th>{{ 'common.drawsShort' | t }}</th><th>{{ 'common.lossesShort' | t }}</th><th>{{ 'common.goalsForShort' | t }}</th><th>{{ 'common.goalsAgainstShort' | t }}</th><th>{{ 'common.goalDifferenceShort' | t }}</th><th>{{ 'common.yellowCardsShort' | t }}</th><th>{{ 'common.redCardsShort' | t }}</th><th>{{ 'common.cards' | t }}</th><th>Eff%</th>
           </tr>
         </thead>
         <tbody>
-          @for (row of rows(); track row.teamId; let i = $index) {
+          @for (row of rows(); track row.teamId) {
             <tr>
-              <td>{{ i + 1 }}</td>
+              <td>{{ row.position }}</td>
               <td>{{ row.teamFlag || '⚽' }} {{ row.teamName }}</td>
               <td>{{ row.gamesPlayed }}</td>
               <td>{{ row.points }}</td>

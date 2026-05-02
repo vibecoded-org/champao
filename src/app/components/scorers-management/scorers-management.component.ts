@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { TranslatePipe } from '../../core/pipes/t.pipe';
 import { I18nService } from '../../core/services/i18n.service';
-import { FileUp, LucideAngularModule } from 'lucide-angular';
+import { Check, FileUp, LucideAngularModule, Plus, Trash2, X } from 'lucide-angular';
 import { Player } from '../../core/models/player.model';
 import { Team } from '../../core/models/team.model';
 
@@ -22,6 +22,10 @@ export class ScorersManagementComponent {
   readonly removePlayer = output<string>();
 
   protected readonly importIcon = FileUp;
+  protected readonly addIcon = Plus;
+  protected readonly saveIcon = Check;
+  protected readonly trashIcon = Trash2;
+  protected readonly closeIcon = X;
   protected readonly activeTeamId = signal<string | null>(null);
   protected readonly importModalOpen = signal(false);
   protected readonly importText = signal('');

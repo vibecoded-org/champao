@@ -1,11 +1,28 @@
 <div class="min-h-screen bg-base-200 text-base-content">
   <header class="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100 px-3 py-0">
-    <div class="mx-auto flex w-full max-w-7xl items-center">
+    <div class="mx-auto flex w-full max-w-7xl items-center gap-3">
+      @if (store.config().mode === 'both') {
+        <label class="fieldset-label sr-only" for="scope-selector">{{ 'scope.title' | t }}</label>
+        <select id="scope-selector" class="select select-bordered select-sm w-44" [value]="selectedScope()" (change)="setScope($any($event.target).value)">
+          <option value="league">{{ 'scope.league' | t }}</option>
+          <option value="cup">{{ 'scope.cup' | t }}</option>
+          <option value="total">{{ 'scope.total' | t }}</option>
+        </select>
+      }
+
       <nav [attr.aria-label]="'aria.primaryNavigation' | t">
-        <ul class="menu menu-horizontal menu-sm gap-1 px-0">
+        <ul class="flex items-center gap-1 px-0">
           @for (item of navItems; track item.path) {
             <li>
-              <a [routerLink]="item.path" routerLinkActive="menu-active">{{ item.label | t }}</a>
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="btn-primary"
+                class="btn btn-ghost btn-sm btn-circle"
+                [title]="item.label | t"
+                [attr.aria-label]="item.label | t"
+              >
+                <lucide-angular [img]="item.icon" [size]="16" aria-hidden="true" />
+              </a>
             </li>
           }
         </ul>
@@ -46,7 +63,7 @@
     }
   </div>
 
-  <main class="mx-auto w-full max-w-7xl p-4 sm:p-5 lg:p-6">
+  <main class="mx-auto w-full max-w-7xl p-3 sm:p-4 lg:p-6">
     <router-outlet />
   </main>
 </div>
@@ -54,11 +71,31 @@
 @if (regenerateConfirmOpen()) {
   <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'aria.confirmRegenerateFixtures' | t">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="regenerateConfirmOpen.set(false)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="font-bold text-lg">{{ 'shell.regenerate.title' | t }}</h3>
       <p class="py-2 text-sm text-base-content/80">{{ 'shell.regenerate.description' | t }}</p>
       <div class="modal-action">
         <button class="btn" type="button" (click)="regenerateConfirmOpen.set(false)">{{ 'common.cancel' | t }}</button>
         <button class="btn btn-warning" type="button" (click)="generateFixtures(true)">{{ 'shell.regenerate.confirm' | t }}</button>
+      </div>
+    </div>
+  </dialog>
+}
+
+@if (chooseScopeForGenerationOpen()) {
+  <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'scope.chooseGenerate' | t">
+    <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="chooseScopeForGenerationOpen.set(false)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
+      <h3 class="font-bold text-lg">{{ 'scope.chooseGenerate' | t }}</h3>
+      <p class="py-2 text-sm text-base-content/80">{{ 'scope.chooseGenerateDescription' | t }}</p>
+      <div class="modal-action">
+        <button class="btn" type="button" (click)="chooseScopeForGenerationOpen.set(false)">{{ 'common.cancel' | t }}</button>
+        <button class="btn" type="button" (click)="chooseScopeAndGenerate('league')">{{ 'scope.league' | t }}</button>
+        <button class="btn" type="button" (click)="chooseScopeAndGenerate('cup')">{{ 'scope.cup' | t }}</button>
       </div>
     </div>
   </dialog>

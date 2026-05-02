@@ -1,86 +1,83 @@
-<div class="card bg-base-100 shadow-sm">
-  <div class="card-body gap-4">
+<div class="card min-w-0 overflow-hidden bg-base-100 shadow-sm">
+  <div class="card-body p-3 sm:p-5 gap-3">
     <div>
       <h3 class="card-title text-base">{{ 'format.title' | t }}</h3>
       <p class="text-sm text-base-content/70">{{ 'format.description' | t }}</p>
     </div>
 
-    <div class="tabs tabs-box">
-      <button class="tab" [class.tab-active]="config().format === 'league'" (click)="formatChange.emit('league')">{{ 'format.league' | t }}</button>
-      <button class="tab" [class.tab-active]="config().format === 'cup'" (click)="formatChange.emit('cup')">{{ 'format.cup' | t }}</button>
-    </div>
-
-    @if (config().format === 'league') {
-      <fieldset class="fieldset rounded-box border border-base-300 p-4">
+    @if (mode() !== 'cup') {
+      <fieldset class="fieldset rounded-box border border-base-300 p-3 sm:p-4">
         <legend class="fieldset-legend">{{ 'format.leagueOptions' | t }}</legend>
 
         <label class="label cursor-pointer justify-start gap-3">
-          <input type="checkbox" class="toggle toggle-primary" [checked]="config().league.homeAndAway" (change)="leagueChange.emit({ ...config().league, homeAndAway: $any($event.target).checked })" />
-          <span class="label-text">{{ 'format.homeAway' | t }}</span>
+          <input type="checkbox" class="toggle toggle-sm toggle-primary" [checked]="config().league.homeAndAway" (change)="leagueChange.emit({ ...config().league, homeAndAway: $any($event.target).checked })" />
+          <span class="label-text text-sm">{{ 'format.homeAway' | t }}</span>
         </label>
-        <p class="label text-xs text-base-content/70">{{ 'format.homeAwayHelp' | t }}</p>
+        <p class="mt-1 text-xs text-base-content/70">{{ 'format.homeAwayHelp' | t }}</p>
 
         <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
           <div>
-            <label class="fieldset-label">{{ 'format.pointsWin' | t }}</label>
-            <input class="input input-bordered w-full" type="number" [value]="config().league.pointsWin" (change)="leagueChange.emit({ ...config().league, pointsWin: +$any($event.target).value })" />
+            <label class="fieldset-label text-xs">{{ 'format.pointsWin' | t }}</label>
+            <input class="input input-sm input-bordered w-full" type="number" [value]="config().league.pointsWin" (change)="leagueChange.emit({ ...config().league, pointsWin: +$any($event.target).value })" />
           </div>
           <div>
-            <label class="fieldset-label">{{ 'format.pointsDraw' | t }}</label>
-            <input class="input input-bordered w-full" type="number" [value]="config().league.pointsDraw" (change)="leagueChange.emit({ ...config().league, pointsDraw: +$any($event.target).value })" />
+            <label class="fieldset-label text-xs">{{ 'format.pointsDraw' | t }}</label>
+            <input class="input input-sm input-bordered w-full" type="number" [value]="config().league.pointsDraw" (change)="leagueChange.emit({ ...config().league, pointsDraw: +$any($event.target).value })" />
           </div>
           <div>
-            <label class="fieldset-label">{{ 'format.pointsLoss' | t }}</label>
-            <input class="input input-bordered w-full" type="number" [value]="config().league.pointsLoss" (change)="leagueChange.emit({ ...config().league, pointsLoss: +$any($event.target).value })" />
+            <label class="fieldset-label text-xs">{{ 'format.pointsLoss' | t }}</label>
+            <input class="input input-sm input-bordered w-full" type="number" [value]="config().league.pointsLoss" (change)="leagueChange.emit({ ...config().league, pointsLoss: +$any($event.target).value })" />
           </div>
         </div>
       </fieldset>
-    } @else {
-      <fieldset class="fieldset rounded-box border border-base-300 p-4">
+    }
+
+    @if (mode() !== 'league') {
+      <fieldset class="fieldset rounded-box border border-base-300 p-3 sm:p-4">
         <legend class="fieldset-legend">{{ 'format.cupOptions' | t }}</legend>
 
         <label class="label cursor-pointer justify-start gap-3">
-          <input type="checkbox" class="toggle toggle-primary" [checked]="config().cup.homeAndAway" (change)="cupChange.emit({ ...config().cup, homeAndAway: $any($event.target).checked })" />
-          <span class="label-text">{{ 'format.cupHomeAway' | t }}</span>
+          <input type="checkbox" class="toggle toggle-sm toggle-primary" [checked]="config().cup.homeAndAway" (change)="cupChange.emit({ ...config().cup, homeAndAway: $any($event.target).checked })" />
+          <span class="label-text text-sm">{{ 'format.cupHomeAway' | t }}</span>
         </label>
         @if (config().cup.homeAndAway) {
-          <label class="label cursor-pointer justify-start gap-3 mt-2">
-            <input type="checkbox" class="toggle toggle-secondary" [checked]="config().cup.uniqueFinalMatch" (change)="cupChange.emit({ ...config().cup, uniqueFinalMatch: $any($event.target).checked })" />
-            <span class="label-text">{{ 'format.uniqueFinal' | t }}</span>
+          <label class="label cursor-pointer justify-start gap-3 mt-1">
+            <input type="checkbox" class="toggle toggle-sm toggle-secondary" [checked]="config().cup.uniqueFinalMatch" (change)="cupChange.emit({ ...config().cup, uniqueFinalMatch: $any($event.target).checked })" />
+            <span class="label-text text-sm">{{ 'format.uniqueFinal' | t }}</span>
           </label>
-          <p class="label text-xs text-base-content/70">{{ 'format.uniqueFinalHelp' | t }}</p>
+          <p class="mt-1 text-xs text-base-content/70">{{ 'format.uniqueFinalHelp' | t }}</p>
 
           <div class="mt-2">
-            <label class="fieldset-label">{{ 'format.drawCriteria' | t }}</label>
-            <select class="select select-bordered w-full sm:max-w-xs" [value]="config().cup.drawTiebreaker" (change)="cupChange.emit({ ...config().cup, drawTiebreaker: $any($event.target).value })">
+            <label class="fieldset-label text-xs">{{ 'format.drawCriteria' | t }}</label>
+            <select class="select select-sm select-bordered w-full" [value]="config().cup.drawTiebreaker" (change)="cupChange.emit({ ...config().cup, drawTiebreaker: $any($event.target).value })">
               <option value="away-goals">{{ 'format.awayGoals' | t }}</option>
               <option value="penalties">{{ 'format.penalties' | t }}</option>
             </select>
-            <p class="label text-xs text-base-content/70">{{ 'format.drawCriteriaHelp' | t }}</p>
+            <p class="mt-1 text-xs text-base-content/70">{{ 'format.drawCriteriaHelp' | t }}</p>
           </div>
         }
       </fieldset>
     }
 
-    <fieldset class="fieldset rounded-box border border-base-300 p-4">
+    <fieldset class="fieldset rounded-box border border-base-300 p-3 sm:p-4">
       <legend class="fieldset-legend">{{ 'format.discipline' | t }}</legend>
-      <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <div>
-          <label class="fieldset-label">{{ 'format.yellowThreshold' | t }}</label>
-          <input class="input input-bordered w-full" type="number" min="1" [value]="config().discipline.yellowCardsThreshold" (change)="disciplineChange.emit({ ...config().discipline, yellowCardsThreshold: +$any($event.target).value })" />
-          <p class="label text-xs text-base-content/70">{{ 'format.thresholdHelp' | t }}</p>
+          <label class="fieldset-label text-xs">{{ 'format.yellowThreshold' | t }}</label>
+          <input class="input input-sm input-bordered w-full" type="number" min="1" [value]="config().discipline.yellowCardsThreshold" (change)="disciplineChange.emit({ ...config().discipline, yellowCardsThreshold: +$any($event.target).value })" />
+          <p class="mt-1 text-xs text-base-content/70">{{ 'format.thresholdHelp' | t }}</p>
         </div>
         <div>
-          <label class="fieldset-label">{{ 'format.yellowSuspensionGames' | t }}</label>
-          <input class="input input-bordered w-full" type="number" min="0" [value]="config().discipline.yellowSuspensionGames" (change)="disciplineChange.emit({ ...config().discipline, yellowSuspensionGames: +$any($event.target).value })" />
+          <label class="fieldset-label text-xs">{{ 'format.yellowSuspensionGames' | t }}</label>
+          <input class="input input-sm input-bordered w-full" type="number" min="0" [value]="config().discipline.yellowSuspensionGames" (change)="disciplineChange.emit({ ...config().discipline, yellowSuspensionGames: +$any($event.target).value })" />
         </div>
         <div>
-          <label class="fieldset-label">{{ 'format.redThreshold' | t }}</label>
-          <input class="input input-bordered w-full" type="number" min="1" [value]="config().discipline.redCardsThreshold" (change)="disciplineChange.emit({ ...config().discipline, redCardsThreshold: +$any($event.target).value })" />
+          <label class="fieldset-label text-xs">{{ 'format.redThreshold' | t }}</label>
+          <input class="input input-sm input-bordered w-full" type="number" min="1" [value]="config().discipline.redCardsThreshold" (change)="disciplineChange.emit({ ...config().discipline, redCardsThreshold: +$any($event.target).value })" />
         </div>
         <div>
-          <label class="fieldset-label">{{ 'format.redSuspensionGames' | t }}</label>
-          <input class="input input-bordered w-full" type="number" min="0" [value]="config().discipline.redSuspensionGames" (change)="disciplineChange.emit({ ...config().discipline, redSuspensionGames: +$any($event.target).value })" />
+          <label class="fieldset-label text-xs">{{ 'format.redSuspensionGames' | t }}</label>
+          <input class="input input-sm input-bordered w-full" type="number" min="0" [value]="config().discipline.redSuspensionGames" (change)="disciplineChange.emit({ ...config().discipline, redSuspensionGames: +$any($event.target).value })" />
         </div>
       </div>
     </fieldset>

@@ -10,9 +10,9 @@
             <tr><th>#</th><th>{{ 'common.team' | t }}</th><th>{{ 'common.player' | t }}</th><th>{{ 'common.goals' | t }}</th></tr>
           </thead>
           <tbody>
-            @for (row of rows(); track row.teamName + row.scorerName; let i = $index) {
+            @for (row of rows(); track row.teamName + row.scorerName) {
               <tr>
-                <td>{{ i + 1 }}</td>
+                <td>{{ row.position }}</td>
                 <td>{{ row.teamFlag || '' }} {{ row.teamName }}</td>
                 <td>{{ row.scorerName }}</td>
                 <td>{{ row.goals }}</td>

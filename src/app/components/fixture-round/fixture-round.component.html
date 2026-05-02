@@ -1,7 +1,7 @@
 <section class="card bg-base-100 shadow-sm">
-  <div class="card-body">
+  <div class="card-body p-3 sm:p-4">
     <h3 class="card-title">{{ label() || (('common.round' | t) + ' ' + round()) }}</h3>
-    <div class="grid gap-3 md:grid-cols-2">
+    <div class="grid gap-2 sm:gap-3 md:grid-cols-2">
       @for (fixture of fixtures(); track fixture.id) {
         <app-fixture-card
           [fixture]="fixture"

@@ -1,32 +1,32 @@
 <div class="card bg-base-100 shadow-sm">
-  <div class="card-body gap-4">
+  <div class="card-body p-3 sm:p-5 gap-3">
     <div>
       <h3 class="card-title text-base">{{ 'importExport.title' | t }}</h3>
       <p class="text-sm text-base-content/70">{{ 'importExport.description' | t }}</p>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-      <fieldset class="fieldset rounded-box border border-base-300 p-4">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <fieldset class="fieldset rounded-box border border-base-300 p-3 sm:p-4">
         <legend class="fieldset-legend">{{ 'importExport.exportTitle' | t }}</legend>
         <p class="text-sm text-base-content/80">{{ 'importExport.exportDesc' | t }}</p>
-        <button class="btn btn-primary mt-2 self-start" type="button" (click)="exportJson.emit()">{{ 'importExport.exportBtn' | t }}</button>
+        <button class="btn btn-sm btn-primary mt-2 self-start" type="button" (click)="exportJson.emit()">{{ 'importExport.exportBtn' | t }}</button>
       </fieldset>
 
-      <fieldset class="fieldset rounded-box border border-base-300 p-4">
+      <fieldset class="fieldset rounded-box border border-base-300 p-3 sm:p-4">
         <legend class="fieldset-legend">{{ 'importExport.importTitle' | t }}</legend>
-        <label class="fieldset-label">{{ 'importExport.importChoose' | t }}</label>
-        <input class="file-input file-input-bordered w-full" type="file" accept="application/json,.json" (change)="onFileChange($event)" />
+        <label class="fieldset-label text-xs">{{ 'importExport.importChoose' | t }}</label>
+        <input class="file-input file-input-sm file-input-bordered w-full" type="file" accept="application/json,.json" (change)="onFileChange($event)" />
         @if (selectedFileName(); as fileName) {
-          <p class="label text-xs text-base-content/70">{{ i18n.translate('importExport.importSelected', { fileName }) }}</p>
+          <p class="mt-1 text-xs text-base-content/70">{{ i18n.translate('importExport.importSelected', { fileName }) }}</p>
         }
-        <p class="label text-xs text-base-content/70">{{ 'importExport.importDesc' | t }}</p>
-        <button class="btn btn-secondary mt-2 self-start" type="button" [disabled]="!selectedFileName()" (click)="submitImport()">{{ 'importExport.importBtn' | t }}</button>
+        <p class="mt-1 text-xs text-base-content/70">{{ 'importExport.importDesc' | t }}</p>
+        <button class="btn btn-sm btn-secondary mt-2 self-start" type="button" [disabled]="!selectedFileName()" (click)="submitImport()">{{ 'importExport.importBtn' | t }}</button>
       </fieldset>
 
-      <fieldset class="fieldset rounded-box border border-error/30 bg-error/5 p-4">
+      <fieldset class="fieldset rounded-box border border-error/30 bg-error/5 p-3 sm:p-4">
         <legend class="fieldset-legend text-error">{{ 'importExport.dangerTitle' | t }}</legend>
         <p class="text-sm text-base-content/80">{{ 'importExport.dangerDesc' | t }}</p>
-        <button class="btn btn-error btn-outline mt-2 self-start" type="button" (click)="reset.emit()">{{ 'importExport.resetBtn' | t }}</button>
+        <button class="btn btn-sm btn-error btn-outline mt-2 self-start" type="button" (click)="reset.emit()">{{ 'importExport.resetBtn' | t }}</button>
       </fieldset>
     </div>
   </div>

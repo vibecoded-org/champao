@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { LucideAngularModule, X } from 'lucide-angular';
 import { TranslatePipe } from '../../core/pipes/t.pipe';
 import { I18nService } from '../../core/services/i18n.service';
 import { Fixture } from '../../core/models/fixture.model';
@@ -8,7 +9,7 @@ import { SuspensionCause } from '../../core/services/championship-store.service'
 
 @Component({
   selector: 'app-suspended-players-modal',
-  imports: [TranslatePipe],
+  imports: [LucideAngularModule, TranslatePipe],
   templateUrl: './suspended-players-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -22,6 +23,7 @@ export class SuspendedPlayersModalComponent {
   readonly teamsMap = input.required<Map<string, Team>>();
 
   readonly close = output<void>();
+  protected readonly closeIcon = X;
 
   protected readonly suspendedPlayers = computed(() => {
     const suspended = this.suspendedPlayerIds();

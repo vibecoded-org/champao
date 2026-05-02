@@ -13,6 +13,7 @@ export interface RankingCriterion {
 }
 
 export interface RankingRow {
+  position: number;
   teamId: string;
   teamName: string;
   teamFlag?: string;
@@ -31,6 +32,7 @@ export interface RankingRow {
 }
 
 export interface ScorerRankingRow {
+  position: number;
   teamId: string | null;
   teamName: string;
   teamFlag?: string;
@@ -40,6 +42,7 @@ export interface ScorerRankingRow {
 }
 
 export interface CardsRankingRow {
+  position: number;
   teamId: string | null;
   teamName: string;
   teamFlag?: string;

@@ -1,6 +1,9 @@
 @if (fixture(); as currentFixture) {
   <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'match.details' | t">
     <div class="modal-box max-w-4xl p-5">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="close.emit()">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="text-xl font-bold">{{ 'common.round' | t }} {{ currentFixture.round }} · {{ 'common.match' | t }} {{ currentFixture.matchNumber }}</h3>
       <div class="mb-5 flex flex-wrap items-center gap-2">
         <p class="text-base">{{ i18n.translate('match.versus', { home: teamLabel(currentFixture.homeTeamId), away: teamLabel(currentFixture.awayTeamId) }) }}</p>
@@ -33,36 +36,56 @@
       }
 
       <div class="grid gap-3 md:grid-cols-2">
-        <section class="rounded-box border border-base-300 p-4">
-          <h4 class="mb-3 text-lg font-semibold">{{ teamLabel(currentFixture.homeTeamId) }}</h4>
+        <section class="rounded-box border border-base-300 p-3">
+          <h4 class="mb-3 text-sm font-semibold truncate">{{ teamLabel(currentFixture.homeTeamId) }}</h4>
           <div class="flex flex-wrap gap-2">
-            <button class="btn btn-primary btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'goal')"><lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />{{ 'common.goal' | t }}</button>
-            <button class="btn btn-warning btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'yellow')"><lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />{{ 'match.yellowCard' | t }}</button>
-            <button class="btn btn-error btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'red')"><lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />{{ 'match.redCard' | t }}</button>
+            <button class="btn btn-primary btn-sm" type="button" [title]="'common.goal' | t" (click)="openPicker(currentFixture.homeTeamId, 'goal')">
+              <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
+            </button>
+            <button class="btn btn-warning btn-sm" type="button" [title]="'match.yellowCard' | t" (click)="openPicker(currentFixture.homeTeamId, 'yellow')">
+              <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
+            </button>
+            <button class="btn btn-error btn-sm" type="button" [title]="'match.redCard' | t" (click)="openPicker(currentFixture.homeTeamId, 'red')">
+              <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
+            </button>
           </div>
         </section>
 
-        <section class="rounded-box border border-base-300 p-4">
-          <h4 class="mb-3 text-lg font-semibold">{{ teamLabel(currentFixture.awayTeamId) }}</h4>
+        <section class="rounded-box border border-base-300 p-3">
+          <h4 class="mb-3 text-sm font-semibold truncate">{{ teamLabel(currentFixture.awayTeamId) }}</h4>
           <div class="flex flex-wrap gap-2">
-            <button class="btn btn-primary btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'goal')"><lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />{{ 'common.goal' | t }}</button>
-            <button class="btn btn-warning btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'yellow')"><lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />{{ 'match.yellowCard' | t }}</button>
-            <button class="btn btn-error btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'red')"><lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />{{ 'match.redCard' | t }}</button>
+            <button class="btn btn-primary btn-sm" type="button" [title]="'common.goal' | t" (click)="openPicker(currentFixture.awayTeamId, 'goal')">
+              <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
+            </button>
+            <button class="btn btn-warning btn-sm" type="button" [title]="'match.yellowCard' | t" (click)="openPicker(currentFixture.awayTeamId, 'yellow')">
+              <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
+            </button>
+            <button class="btn btn-error btn-sm" type="button" [title]="'match.redCard' | t" (click)="openPicker(currentFixture.awayTeamId, 'red')">
+              <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
+              <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
+            </button>
           </div>
         </section>
       </div>
 
       <div class="mt-5 grid gap-4 md:grid-cols-2">
         <section>
-          <h4 class="mb-2 text-lg font-semibold">{{ 'common.goals' | t }}</h4>
+          <h4 class="mb-2 text-sm font-semibold">{{ 'common.goals' | t }}</h4>
           @if (currentFixture.goals.length === 0) {
             <p class="text-sm text-base-content/70">{{ 'match.noGoals' | t }}</p>
           } @else {
             <div class="space-y-2">
               @for (goal of currentFixture.goals; track goal.id) {
-                <div class="flex items-center justify-between rounded-box border border-base-300 p-2">
-                  <span class="text-sm">{{ teamLabel(goal.teamId) }} - {{ goal.isOwnGoal ? ('common.ownGoal' | t) : playerLabel(goal.playerId, goal.playerName) }}</span>
-                  <button class="btn btn-xs btn-error btn-outline" type="button" (click)="removeGoal.emit({ fixtureId: currentFixture.id, goalId: goal.id })">{{ 'match.remove' | t }}</button>
+                <div class="flex items-center justify-between gap-2 rounded-box border border-base-300 p-2">
+                  <span class="min-w-0 truncate text-sm">{{ teamLabel(goal.teamId) }} – {{ goal.isOwnGoal ? ('common.ownGoal' | t) : playerLabel(goal.playerId, goal.playerName) }}</span>
+                  <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" [title]="'match.remove' | t" (click)="removeGoal.emit({ fixtureId: currentFixture.id, goalId: goal.id })">
+                    <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
+                  </button>
                 </div>
               }
             </div>
@@ -70,17 +93,20 @@
         </section>
 
         <section>
-          <h4 class="mb-2 text-lg font-semibold">{{ 'common.cards' | t }}</h4>
+          <h4 class="mb-2 text-sm font-semibold">{{ 'common.cards' | t }}</h4>
           @if (currentFixture.cards.length === 0) {
             <p class="text-sm text-base-content/70">{{ 'match.noCards' | t }}</p>
           } @else {
             <div class="space-y-2">
               @for (card of currentFixture.cards; track card.id) {
-                <div class="flex items-center justify-between rounded-box border border-base-300 p-2">
-                  <span class="text-sm">{{ teamLabel(card.teamId) }} - {{ playerLabel(card.playerId, card.playerName) }}
-                    <span class="badge ml-2" [class.badge-warning]="card.cardType === 'yellow'" [class.badge-error]="card.cardType === 'red'">{{ cardTypeLabel(card.cardType) }}</span>
+                <div class="flex items-center justify-between gap-2 rounded-box border border-base-300 p-2">
+                  <span class="min-w-0 truncate text-sm">
+                    {{ teamLabel(card.teamId) }} – {{ playerLabel(card.playerId, card.playerName) }}
+                    <span class="badge ml-1" [class.badge-warning]="card.cardType === 'yellow'" [class.badge-error]="card.cardType === 'red'">{{ cardTypeLabel(card.cardType) }}</span>
                   </span>
-                  <button class="btn btn-xs btn-error btn-outline" type="button" (click)="removeCard.emit({ fixtureId: currentFixture.id, cardId: card.id })">{{ 'match.remove' | t }}</button>
+                  <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" [title]="'match.remove' | t" (click)="removeCard.emit({ fixtureId: currentFixture.id, cardId: card.id })">
+                    <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
+                  </button>
                 </div>
               }
             </div>
@@ -90,9 +116,15 @@
 
       <div class="modal-action">
         @if (currentFixture.status === 'not-finished') {
-          <button class="btn btn-success" type="button" (click)="finishAndClose()">{{ 'common.finish' | t }}</button>
+          <button class="btn btn-success btn-sm" type="button" [title]="'common.finish' | t" (click)="finishAndClose()">
+            <lucide-angular [img]="finishIcon" [size]="16" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ 'common.finish' | t }}</span>
+          </button>
         }
-        <button class="btn" type="button" (click)="close.emit()">{{ 'common.close' | t }}</button>
+        <button class="btn btn-sm" type="button" [title]="'common.close' | t" (click)="close.emit()">
+          <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ 'common.close' | t }}</span>
+        </button>
       </div>
     </div>
   </dialog>
@@ -102,40 +134,49 @@
 
 @if (pickerOpen()) {
   <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'match.selectPlayer' | t">
-    <div class="modal-box max-h-[80vh]">
-      <h3 class="text-lg font-bold">{{ 'match.selectPlayer' | t }}</h3>
-      <p class="mb-4 text-sm text-base-content/70">{{ i18n.translate('match.selectPlayerFor', { action: selectedAction() === 'goal' ? i18n.translate('common.goal') : selectedAction() === 'yellow' ? i18n.translate('match.yellowCard') : i18n.translate('match.redCard'), team: teamLabel(selectedTeamId() || '') }) }}</p>
+    <div class="modal-box w-full max-w-2xl">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="closePicker()">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
+      <h3 class="text-base font-bold">{{ 'match.selectPlayer' | t }}</h3>
+      <p class="mb-3 text-sm text-base-content/70">{{ i18n.translate('match.selectPlayerFor', { action: selectedAction() === 'goal' ? i18n.translate('common.goal') : selectedAction() === 'yellow' ? i18n.translate('match.yellowCard') : i18n.translate('match.redCard'), team: teamLabel(selectedTeamId() || '') }) }}</p>
 
-      <div class="rounded-box border border-base-300 bg-base-100 p-2">
-        <div class="mb-2 flex items-center gap-2">
-          <input class="input input-sm input-bordered w-full" [placeholder]="'match.searchPlayer' | t" [ngModel]="playerSearch()" (ngModelChange)="playerSearch.set($event)" />
-          <button class="btn btn-sm btn-circle btn-outline btn-primary" type="button" (click)="newPlayerOpen.set(true)" [attr.aria-label]="'match.newPlayer' | t" [title]="'match.newPlayer' | t">
-            <lucide-angular [img]="addPlayerIcon" [size]="14" aria-hidden="true" />
+      <div class="mb-3 flex items-center gap-2">
+        <input class="input input-sm input-bordered flex-1" [placeholder]="'match.searchPlayer' | t" [ngModel]="playerSearch()" (ngModelChange)="playerSearch.set($event)" />
+        <button class="btn btn-sm btn-circle btn-outline btn-primary shrink-0" type="button" (click)="newPlayerOpen.set(true)" [attr.aria-label]="'match.newPlayer' | t" [title]="'match.newPlayer' | t">
+          <lucide-angular [img]="addPlayerIcon" [size]="14" aria-hidden="true" />
+        </button>
+        @if (selectedAction() === 'goal') {
+          <button class="btn btn-sm btn-circle btn-outline btn-warning shrink-0" type="button" (click)="chooseOwnGoal()" [attr.aria-label]="'common.ownGoal' | t" [title]="'common.ownGoal' | t">
+            <lucide-angular [img]="ownGoalIcon" [size]="14" aria-hidden="true" />
           </button>
-          @if (selectedAction() === 'goal') {
-            <button class="btn btn-sm btn-circle btn-outline btn-warning" type="button" (click)="chooseOwnGoal()" [attr.aria-label]="'common.ownGoal' | t" [title]="'common.ownGoal' | t">
-              <lucide-angular [img]="ownGoalIcon" [size]="14" aria-hidden="true" />
-            </button>
-          }
-        </div>
-        <ul class="menu max-h-90 overflow-y-auto gap-1 p-0">
-          @for (player of filteredTeamPlayers(); track player.id) {
-            <li>
-              <div class="rounded-box border border-base-200 bg-base-100 cursor-pointer flex items-center justify-between" [class.opacity-50]="isPlayerSuspended(player.id)" [class.pointer-events-none]="isPlayerSuspended(player.id)" [class.hover:bg-base-200]="!isPlayerSuspended(player.id)" (click)="choosePlayer(player)">
-                <span>{{ player.name }}</span>
-                @if (isPlayerSuspended(player.id)) {
-                  <span class="badge badge-warning badge-outline">{{ 'match.suspended' | t }}</span>
-                }
-              </div>
-            </li>
-          } @empty {
-            <li><div class="text-sm text-base-content/70">{{ 'match.noPlayersYet' | t }}</div></li>
-          }
-        </ul>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
+        @for (player of filteredTeamPlayers(); track player.id) {
+          <button
+            type="button"
+            class="flex items-center justify-between rounded-box border border-base-300 bg-base-100 px-3 py-2 text-left text-sm transition-colors hover:bg-base-200 active:bg-base-300"
+            [class.opacity-40]="isPlayerSuspended(player.id)"
+            [disabled]="isPlayerSuspended(player.id)"
+            (click)="choosePlayer(player)"
+          >
+            <span class="truncate">{{ player.name }}</span>
+            @if (isPlayerSuspended(player.id)) {
+              <span class="badge badge-warning badge-outline ml-2 shrink-0 text-xs">{{ 'match.suspended' | t }}</span>
+            }
+          </button>
+        } @empty {
+          <p class="col-span-full text-sm text-base-content/70">{{ 'match.noPlayersYet' | t }}</p>
+        }
       </div>
 
       <div class="modal-action">
-        <button class="btn" type="button" (click)="closePicker()">{{ 'common.cancel' | t }}</button>
+        <button class="btn btn-sm" type="button" [title]="'common.cancel' | t" (click)="closePicker()">
+          <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ 'common.cancel' | t }}</span>
+        </button>
       </div>
     </div>
   </dialog>
@@ -144,11 +185,20 @@
 @if (newPlayerOpen()) {
   <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'match.newPlayer' | t">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="newPlayerOpen.set(false)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="text-lg font-bold">{{ 'match.newPlayer' | t }}</h3>
-      <input class="input input-bordered mt-3 w-full" [placeholder]="'players.playerName' | t" [ngModel]="newPlayerName()" (ngModelChange)="newPlayerName.set($event)" />
+      <input class="input input-sm input-bordered mt-3 w-full" [placeholder]="'players.playerName' | t" [ngModel]="newPlayerName()" (ngModelChange)="newPlayerName.set($event)" />
       <div class="modal-action">
-        <button class="btn" type="button" (click)="newPlayerOpen.set(false)">{{ 'match.back' | t }}</button>
-        <button class="btn btn-primary" type="button" [disabled]="!newPlayerName().trim()" (click)="saveNewPlayer()">{{ 'common.save' | t }}</button>
+        <button class="btn btn-sm" type="button" [title]="'match.back' | t" (click)="newPlayerOpen.set(false)">
+          <lucide-angular [img]="backIcon" [size]="16" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ 'match.back' | t }}</span>
+        </button>
+        <button class="btn btn-sm btn-primary" type="button" [disabled]="!newPlayerName().trim()" [title]="'common.save' | t" (click)="saveNewPlayer()">
+          <lucide-angular [img]="saveIcon" [size]="16" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ 'common.save' | t }}</span>
+        </button>
       </div>
     </div>
   </dialog>

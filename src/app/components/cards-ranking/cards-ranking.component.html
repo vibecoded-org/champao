@@ -7,12 +7,12 @@
       <div class="overflow-x-auto">
         <table class="table table-zebra">
           <thead>
-            <tr><th>#</th><th>{{ 'common.team' | t }}</th><th>{{ 'common.player' | t }}</th><th>YC</th><th>RC</th><th>{{ 'common.cards' | t }}</th></tr>
+            <tr><th>#</th><th>{{ 'common.team' | t }}</th><th>{{ 'common.player' | t }}</th><th>{{ 'common.yellowCardsShort' | t }}</th><th>{{ 'common.redCardsShort' | t }}</th><th>{{ 'common.cards' | t }}</th></tr>
           </thead>
           <tbody>
-            @for (row of rows(); track row.teamName + row.playerName; let i = $index) {
+            @for (row of rows(); track row.teamName + row.playerName) {
               <tr>
-                <td>{{ i + 1 }}</td>
+                <td>{{ row.position }}</td>
                 <td>{{ row.teamFlag || '' }} {{ row.teamName }}</td>
                 <td>{{ row.playerName }}</td>
                 <td>{{ row.yellowCards }}</td>

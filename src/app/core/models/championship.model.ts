@@ -24,9 +24,15 @@ export interface DisciplineConfig {
   redSuspensionGames: number;
 }
 
+export type CompetitionScope = 'league' | 'cup';
+
+export type AppScope = CompetitionScope | 'total';
+
+export type CompetitionMode = 'league' | 'cup' | 'both';
+
 export interface ChampionshipConfig {
   name: string;
-  format: 'league' | 'cup';
+  mode: CompetitionMode;
   league: LeagueConfig;
   cup: CupConfig;
   discipline: DisciplineConfig;
@@ -38,5 +44,5 @@ export interface ChampionshipState {
   config: ChampionshipConfig;
   teams: Team[];
   players: Player[];
-  fixtures: Fixture[];
+  fixturesByCompetition: Record<CompetitionScope, Fixture[]>;
 }

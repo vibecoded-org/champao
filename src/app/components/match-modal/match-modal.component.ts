@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, output, si
 import { TranslatePipe } from '../../core/pipes/t.pipe';
 import { I18nService } from '../../core/services/i18n.service';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule, OctagonAlert, Plus, Volleyball, X } from 'lucide-angular';
+import { ArrowLeft, Check, Flag, LucideAngularModule, OctagonAlert, Plus, Trash2, Volleyball, X } from 'lucide-angular';
 import { SuspendedPlayersModalComponent } from '../suspended-players-modal/suspended-players-modal.component';
 import { CardType, Fixture } from '../../core/models/fixture.model';
 import { CupConfig } from '../../core/models/championship.model';
@@ -40,6 +40,11 @@ export class MatchModalComponent {
   protected readonly redCardIcon = OctagonAlert;
   protected readonly addPlayerIcon = Plus;
   protected readonly ownGoalIcon = X;
+  protected readonly removeIcon = Trash2;
+  protected readonly finishIcon = Flag;
+  protected readonly closeIcon = X;
+  protected readonly saveIcon = Check;
+  protected readonly backIcon = ArrowLeft;
 
   protected readonly pickerOpen = signal(false);
   protected readonly newPlayerOpen = signal(false);
@@ -109,16 +114,20 @@ export class MatchModalComponent {
     if (!fixture) {
       return false;
     }
-    if (this.format() !== 'cup' || !this.cupConfig().homeAndAway || this.cupConfig().drawTiebreaker !== 'penalties') {
+    if (this.format() !== 'cup' || this.cupConfig().drawTiebreaker !== 'penalties') {
       return false;
     }
 
     const tie = this.tieFixtures();
-    return this.isLastLegOfTie() && tie.length > 1 && tie.every((item) => item.status === 'finished') && this.isAggregateTie();
+    if (tie.length <= 1) {
+      return fixture.status === 'finished' && this.isSingleMatchDraw(fixture);
+    }
+
+    return this.isLastLegOfTie() && tie.every((item) => item.status === 'finished') && this.isAggregateTie();
   });
 
   protected readonly showPenaltyBadge = computed(() => {
-    return this.format() === 'cup' && this.cupConfig().homeAndAway && this.cupConfig().drawTiebreaker === 'penalties' && this.isLastLegOfTie();
+    return this.canSetPenaltyWinner();
   });
 
   protected openPicker(teamId: string, action: 'goal' | CardType): void {
@@ -230,6 +239,12 @@ export class MatchModalComponent {
 
   protected closeSuspendedInfo(): void {
     this.suspendedInfoOpen.set(false);
+  }
+
+  private isSingleMatchDraw(fixture: Fixture): boolean {
+    const homeGoals = fixture.goals.filter((goal) => goal.teamId === fixture.homeTeamId).length;
+    const awayGoals = fixture.goals.filter((goal) => goal.teamId === fixture.awayTeamId).length;
+    return homeGoals === awayGoals;
   }
 
 }

@@ -1,0 +1,196 @@
+<div class="space-y-4">
+  @if (!isFinished()) {
+    <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">
+      {{ 'result.notReady' | t }}
+      <a class="link ml-1" routerLink="/fixtures">{{ 'nav.fixtures' | t }}</a>
+    </div>
+  } @else {
+    @if (scope() === 'total') {
+      <div class="grid gap-3 lg:grid-cols-3">
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body items-center text-center">
+            <h2 class="text-sm uppercase tracking-wider text-base-content/70">{{ 'result.leagueChampionTitle' | t }}</h2>
+            <p class="text-2xl font-black">{{ leagueChampion()?.teamFlag || '⚽' }} {{ leagueChampion()?.teamName || '-' }}</p>
+            @if (leagueChampion(); as row) {
+              <p class="text-sm text-base-content/80">{{ campaignLabelFor(row) }}</p>
+            }
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body items-center text-center">
+            <h2 class="text-sm uppercase tracking-wider text-base-content/70">{{ 'result.cupChampionTitle' | t }}</h2>
+            <p class="text-2xl font-black">{{ cupChampion()?.teamFlag || '⚽' }} {{ cupChampion()?.teamName || '-' }}</p>
+            @if (cupChampion(); as row) {
+              <p class="text-sm text-base-content/80">{{ campaignLabelFor(row) }}</p>
+            }
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body items-center text-center">
+            <h2 class="text-sm uppercase tracking-wider text-base-content/70">{{ 'result.bestCampaignTitle' | t }}</h2>
+            <p class="text-2xl font-black">{{ bestCampaignChampion()?.teamFlag || '⚽' }} {{ bestCampaignChampion()?.teamName || '-' }}</p>
+            @if (bestCampaignChampion(); as row) {
+              <p class="text-sm text-base-content/80">{{ campaignLabelFor(row) }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    } @else if (resultChampion(); as championRow) {
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body items-center text-center">
+          <h2 class="text-sm uppercase tracking-wider text-base-content/70">{{ 'result.championTitle' | t }}</h2>
+          <p class="text-4xl font-black sm:text-5xl">{{ championRow.teamFlag || '⚽' }} {{ championRow.teamName }}</p>
+          <p class="text-sm text-base-content/80">{{ campaignLabel() }}</p>
+        </div>
+      </div>
+    }
+
+    @if (summary(); as stats) {
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="text-xs uppercase text-base-content/70">{{ 'result.totalMatches' | t }}</p><p class="text-2xl font-bold">{{ stats.totalMatches }}</p></div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="text-xs uppercase text-base-content/70">{{ 'result.totalGoals' | t }}</p><p class="text-2xl font-bold">{{ stats.totalGoals }}</p></div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="text-xs uppercase text-base-content/70">{{ 'result.totalYellowCards' | t }}</p><p class="text-2xl font-bold">{{ stats.yellowCards }}</p></div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="text-xs uppercase text-base-content/70">{{ 'result.totalRedCards' | t }}</p><p class="text-2xl font-bold">{{ stats.redCards }}</p></div></div>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="text-xs uppercase text-base-content/70">{{ 'result.totalCards' | t }}</p><p class="text-lg font-semibold">{{ stats.totalCards }}</p></div></div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.bestScorer' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of bestScorers(); track row.teamName + row.scorerName) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.scorerName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.goals }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.teamMostCards' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of teamsMostCards(); track row.teamId) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.totalCards }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.playerMostCards' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of playersMostCards(); track row.teamName + row.playerName) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.playerName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.totalCards }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.teamMostGoalsFor' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of teamsMostGoalsFor(); track row.teamId) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.goalsFor }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.teamLeastGoalsFor' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of teamsLeastGoalsFor(); track row.teamId) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.goalsFor }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.teamMostGoalsAgainst' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of teamsMostGoalsAgainst(); track row.teamId) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.goalsAgainst }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+          <div class="card-body p-4">
+            <p class="text-xs uppercase text-base-content/70">{{ 'result.teamLeastGoalsAgainst' | t }}</p>
+            <div class="mt-2 space-y-1">
+              @for (row of teamsLeastGoalsAgainst(); track row.teamId) {
+                <div class="flex items-center justify-between gap-2 text-sm">
+                  <span class="truncate font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</span>
+                  <span class="font-bold tabular-nums">{{ row.goalsAgainst }}</span>
+                </div>
+              } @empty {
+                <p class="text-lg font-semibold">-</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-3 lg:grid-cols-2">
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="mb-2 text-xs uppercase text-base-content/70">{{ 'result.biggestWin' | t }}</p>@for (fixture of biggestWins(); track fixture.id) { <button class="w-full rounded-box border border-base-300/70 bg-base-100 p-3 text-left transition-all duration-200 hover:border-primary/40 hover:bg-base-200/60" type="button" (click)="openFixtureDetails(fixture)"><div class="space-y-2"><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.homeTeamId) }}</span>@if (yellowCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.homeTeamId) }}</span></div><div class="h-px w-full bg-base-300/50"></div><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.awayTeamId) }}</span>@if (yellowCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.awayTeamId) }}</span></div></div></button> } @empty { <p class="text-sm text-base-content/70">-</p> }</div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="mb-2 text-xs uppercase text-base-content/70">{{ 'result.mostGoalsMatch' | t }}</p>@for (fixture of mostGoalsMatches(); track fixture.id) { <button class="w-full rounded-box border border-base-300/70 bg-base-100 p-3 text-left transition-all duration-200 hover:border-primary/40 hover:bg-base-200/60" type="button" (click)="openFixtureDetails(fixture)"><div class="space-y-2"><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.homeTeamId) }}</span>@if (yellowCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.homeTeamId) }}</span></div><div class="h-px w-full bg-base-300/50"></div><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.awayTeamId) }}</span>@if (yellowCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.awayTeamId) }}</span></div></div></button> } @empty { <p class="text-sm text-base-content/70">-</p> }</div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="mb-2 text-xs uppercase text-base-content/70">{{ 'result.mostBoringMatch' | t }}</p>@for (fixture of mostBoringMatches(); track fixture.id) { <button class="w-full rounded-box border border-base-300/70 bg-base-100 p-3 text-left transition-all duration-200 hover:border-primary/40 hover:bg-base-200/60" type="button" (click)="openFixtureDetails(fixture)"><div class="space-y-2"><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.homeTeamId) }}</span>@if (yellowCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.homeTeamId) }}</span></div><div class="h-px w-full bg-base-300/50"></div><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.awayTeamId) }}</span>@if (yellowCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.awayTeamId) }}</span></div></div></button> } @empty { <p class="text-sm text-base-content/70">-</p> }</div></div>
+        <div class="card bg-base-100 shadow-sm"><div class="card-body p-4"><p class="mb-2 text-xs uppercase text-base-content/70">{{ 'result.mostExcitingMatch' | t }}</p>@for (fixture of mostExcitingMatches(); track fixture.id) { <button class="w-full rounded-box border border-base-300/70 bg-base-100 p-3 text-left transition-all duration-200 hover:border-primary/40 hover:bg-base-200/60" type="button" (click)="openFixtureDetails(fixture)"><div class="space-y-2"><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.homeTeamId) }}</span>@if (yellowCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.homeTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.homeTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.homeTeamId) }}</span></div><div class="h-px w-full bg-base-300/50"></div><div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="truncate text-sm font-semibold">{{ teamLabel(fixture.awayTeamId) }}</span>@if (yellowCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(yellowCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-warning"></span> }</span> } @if (redCards(fixture, fixture.awayTeamId) > 0) { <span class="inline-flex items-end gap-0.5">@for (_ of cardStack(redCards(fixture, fixture.awayTeamId)); track $index) { <span class="h-3 w-2 rounded-[2px] bg-error"></span> }</span> }</span><span class="text-lg font-extrabold tabular-nums">{{ score(fixture, fixture.awayTeamId) }}</span></div></div></button> } @empty { <p class="text-sm text-base-content/70">-</p> }</div></div>
+      </div>
+    }
+  }
+</div>
+
+@if (selectedFixture(); as fixture) {
+  @if (selectedFixtureScope(); as fixtureScope) {
+    <app-match-modal
+      [fixture]="fixture"
+      [allFixtures]="store.fixtures(fixtureScope)"
+      [format]="fixtureScope"
+      [cupConfig]="store.config().cup"
+      [teamsMap]="teamsMap()"
+      [players]="store.players()"
+      [suspendedPlayerIds]="selectedFixtureSuspendedIds()"
+      [suspendedDetails]="selectedFixtureSuspendedDetails()"
+      (close)="closeFixtureDetails()"
+    />
+  }
+}

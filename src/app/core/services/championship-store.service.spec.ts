@@ -14,7 +14,7 @@ describe('ChampionshipStoreService', () => {
     service.addTeam({ name: 'Team A' });
     expect(service.teams().length).toBe(1);
 
-    const raw = localStorage.getItem('champao.state.v2');
+    const raw = localStorage.getItem('champao.state.v3');
     expect(raw).toContain('Team A');
 
     service.resetChampionship();

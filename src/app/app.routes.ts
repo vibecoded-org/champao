@@ -18,6 +18,10 @@ export const routes: Routes = [
         path: 'ranking',
         loadComponent: () => import('./pages/ranking-page/ranking-page.component').then((m) => m.RankingPageComponent)
       },
+      {
+        path: 'result',
+        loadComponent: () => import('./pages/result-page/result-page.component').then((m) => m.ResultPageComponent)
+      },
       { path: '', pathMatch: 'full', redirectTo: 'config' }
     ]
   },

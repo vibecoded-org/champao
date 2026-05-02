@@ -3,7 +3,7 @@ import { ChampionshipState } from '../models/championship.model';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
-  private readonly key = 'champao.state.v2';
+  private readonly key = 'champao.state.v3';
 
   load(): ChampionshipState | null {
     try {

@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-3 sm:space-y-4">
   <div class="tabs tabs-box w-full justify-start overflow-x-auto">
     <button class="tab" [class.tab-active]="activeTab() === 'settings'" type="button" (click)="activeTab.set('settings')">{{ 'config.tabs.settings' | t }}</button>
     <button class="tab" [class.tab-active]="activeTab() === 'teams'" type="button" (click)="activeTab.set('teams')">{{ 'config.tabs.teams' | t }}</button>
@@ -8,102 +8,103 @@
 
 
   @if (activeTab() === 'settings') {
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body gap-2">
-        <h3 class="card-title text-base">{{ 'config.language.title' | t }}</h3>
-        <p class="text-sm text-base-content/70">{{ 'config.language.description' | t }}</p>
-        <label class="fieldset-label">{{ 'config.language.label' | t }}</label>
-        <select class="select select-bordered w-full sm:max-w-sm" [ngModel]="language()" (ngModelChange)="setLanguage($event)">
-          @for (option of availableLanguages(); track option.code) {
-            <option [value]="option.code">{{ option.label }}</option>
-          }
-        </select>
+    <div class="card min-w-0 overflow-hidden bg-base-100 shadow-sm">
+      <div class="card-body p-3 sm:p-5 gap-3">
+        <div>
+          <h3 class="card-title text-base">{{ 'mode.title' | t }}</h3>
+          <p class="text-sm text-base-content/70">{{ 'mode.description' | t }}</p>
+        </div>
+        <div class="flex gap-6">
+          <label class="label cursor-pointer justify-start gap-2">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-sm checkbox-primary"
+              [checked]="store.config().mode !== 'cup'"
+              [disabled]="store.config().mode === 'league'"
+              (change)="store.setMode(store.config().mode === 'both' ? 'cup' : 'both')"
+            />
+            <span class="label-text text-sm">{{ 'mode.league' | t }}</span>
+          </label>
+          <label class="label cursor-pointer justify-start gap-2">
+            <input
+              type="checkbox"
+              class="checkbox checkbox-sm checkbox-primary"
+              [checked]="store.config().mode !== 'league'"
+              [disabled]="store.config().mode === 'cup'"
+              (change)="store.setMode(store.config().mode === 'both' ? 'league' : 'both')"
+            />
+            <span class="label-text text-sm">{{ 'mode.cup' | t }}</span>
+          </label>
+        </div>
       </div>
     </div>
 
-    <div class="grid gap-4 lg:grid-cols-2">
+    <div class="grid gap-3 lg:grid-cols-2">
       <app-championship-format-form
+        class="min-w-0"
         [config]="store.config()"
-        (formatChange)="store.setFormat($event)"
+        [mode]="store.config().mode"
         (leagueChange)="store.setLeagueConfig($event)"
         (cupChange)="store.setCupConfig($event)"
         (disciplineChange)="store.setDisciplineConfig($event)"
       />
 
       <app-ranking-criteria-form
+        class="min-w-0"
         [criteria]="store.config().rankingCriteria"
         (criteriaChange)="store.setRankingCriteria($event)"
       />
     </div>
+
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body p-3 sm:p-5 gap-2">
+        <h3 class="card-title text-base">{{ 'config.language.title' | t }}</h3>
+        <p class="text-sm text-base-content/70">{{ 'config.language.description' | t }}</p>
+        <label class="fieldset-label">{{ 'config.language.label' | t }}</label>
+        <select class="select select-sm select-bordered w-full" [ngModel]="language()" (ngModelChange)="setLanguage($event)">
+          @for (option of availableLanguages(); track option.code) {
+            <option [value]="option.code">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
   }
 
   @if (activeTab() === 'teams') {
-    <div class="card bg-base-100 shadow-sm">
-      <div class="card-body gap-4">
-        <div>
-          <h3 class="card-title text-lg">{{ 'config.teams.title' | t }}</h3>
-          <p class="text-sm text-base-content/70">{{ 'config.teams.description' | t }}</p>
+    <div class="card overflow-hidden bg-base-100 shadow-sm">
+      <div class="card-body p-3 sm:p-5 gap-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h3 class="card-title text-base">{{ 'config.teams.title' | t }}</h3>
+            <p class="text-sm text-base-content/70">{{ 'config.teams.description' | t }}</p>
+          </div>
+          <button class="btn btn-sm btn-primary shrink-0" type="button" (click)="openAddTeamModal()">
+            <lucide-angular [img]="plusIcon" [size]="14" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ 'common.create' | t }}</span>
+          </button>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="table table-zebra">
-            <thead>
-              <tr>
-                <th>{{ 'config.teams.name' | t }}</th>
-                <th>{{ 'config.teams.display' | t }}</th>
-                <th>{{ 'config.teams.flag' | t }}</th>
-                <th>{{ 'config.teams.color' | t }}</th>
-                <th class="text-right">{{ 'common.actions' | t }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="bg-base-200/40">
-                <td><input class="input input-sm input-bordered w-full min-w-40" [placeholder]="'config.teams.placeholderName' | t" [ngModel]="createTeamName()" (ngModelChange)="createTeamName.set($event)" /></td>
-                <td><input class="input input-sm input-bordered w-full min-w-32" [placeholder]="'config.teams.placeholderDisplay' | t" [ngModel]="createTeamDisplayName()" (ngModelChange)="createTeamDisplayName.set($event)" /></td>
-                <td><input class="input input-sm input-bordered w-full min-w-20" placeholder="⚽" [ngModel]="createTeamFlag()" (ngModelChange)="createTeamFlag.set($event)" /></td>
-                <td><input type="color" class="input input-sm input-bordered w-16 p-1" [ngModel]="createTeamColor()" (ngModelChange)="createTeamColor.set($event)" /></td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-primary" type="button" [disabled]="!createTeamName().trim()" (click)="createTeam()">{{ 'common.create' | t }}</button>
-                </td>
-              </tr>
-
-              @for (team of store.teams(); track team.id) {
-                <tr>
-                  @if (editingTeamId() === team.id) {
-                    <td><input class="input input-sm input-bordered w-full min-w-40" [ngModel]="editingTeamName()" (ngModelChange)="editingTeamName.set($event)" /></td>
-                    <td><input class="input input-sm input-bordered w-full min-w-32" [ngModel]="editingTeamDisplayName()" (ngModelChange)="editingTeamDisplayName.set($event)" /></td>
-                    <td><input class="input input-sm input-bordered w-full min-w-20" [ngModel]="editingTeamFlag()" (ngModelChange)="editingTeamFlag.set($event)" /></td>
-                    <td><input type="color" class="input input-sm input-bordered w-16 p-1" [ngModel]="editingTeamColor()" (ngModelChange)="editingTeamColor.set($event)" /></td>
-                    <td>
-                      <div class="flex justify-end gap-2">
-                        <button class="btn btn-sm btn-primary" type="button" (click)="saveEditTeam(team.id)">{{ 'common.save' | t }}</button>
-                        <button class="btn btn-sm" type="button" (click)="cancelEditTeam()">{{ 'common.cancel' | t }}</button>
-                      </div>
-                    </td>
-                  } @else {
-                    <td class="font-medium">{{ team.name }}</td>
-                    <td>{{ team.displayName || '-' }}</td>
-                    <td>{{ team.flag || '⚽' }}</td>
-                    <td>
-                      <span class="badge badge-outline" [style.border-color]="team.color || '#1d4ed8'" [style.color]="team.color || '#1d4ed8'">
-                        {{ team.color || '#1d4ed8' }}
-                      </span>
-                    </td>
-                    <td>
-                      <div class="flex justify-end gap-2">
-                        <button class="btn btn-sm" type="button" (click)="startEditTeam(team)">{{ 'common.edit' | t }}</button>
-                        <button class="btn btn-sm btn-error btn-outline" type="button" (click)="confirmRemoveTeam(team.id)">{{ 'common.delete' | t }}</button>
-                      </div>
-                    </td>
-                  }
-                </tr>
-              } @empty {
-                <tr>
-                  <td colspan="5" class="text-center text-sm text-base-content/70">{{ 'config.teams.empty' | t }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+        <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          @for (team of store.teams(); track team.id) {
+            <div class="flex items-center gap-2 rounded-box border border-base-300 bg-base-200/30 p-3">
+              <span class="text-xl shrink-0">{{ team.flag || '⚽' }}</span>
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold truncate">{{ team.name }}</div>
+                @if (team.displayName) {
+                  <div class="text-xs text-base-content/60 truncate">{{ team.displayName }}</div>
+                }
+              </div>
+              <span class="badge badge-outline shrink-0 text-xs" [style.border-color]="team.color || '#1d4ed8'" [style.color]="team.color || '#1d4ed8'">●</span>
+              <button class="btn btn-ghost btn-sm btn-circle shrink-0" type="button" [title]="'common.edit' | t" (click)="startEditTeam(team)">
+                <lucide-angular [img]="pencilIcon" [size]="14" aria-hidden="true" />
+              </button>
+              <button class="btn btn-ghost btn-sm btn-circle shrink-0 text-error" type="button" [title]="'common.delete' | t" (click)="confirmRemoveTeam(team.id)">
+                <lucide-angular [img]="trashIcon" [size]="14" aria-hidden="true" />
+              </button>
+            </div>
+          } @empty {
+            <div class="col-span-full rounded-box border border-base-300 p-4 text-center text-sm text-base-content/70">{{ 'config.teams.empty' | t }}</div>
+          }
         </div>
       </div>
     </div>
@@ -126,12 +127,67 @@
       (importFile)="requestImportState($event)"
       (reset)="resetConfirmOpen.set(true)"
     />
+
+    <div class="card overflow-hidden bg-base-100 shadow-sm">
+      <div class="card-body p-3 sm:p-5 gap-2">
+        <h3 class="card-title text-base">{{ 'sampleData.title' | t }}</h3>
+        <p class="text-sm text-base-content/70">{{ 'sampleData.description' | t }}</p>
+        <div class="mt-1">
+          <button class="btn btn-sm btn-outline" type="button" (click)="sampleDataConfirmOpen.set(true)">
+            {{ 'sampleData.btn' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
   }
 </div>
+
+@if (teamModalOpen()) {
+  <dialog class="modal modal-open" aria-modal="true">
+    <div class="modal-box w-full max-w-sm">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="cancelEditTeam()">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
+      <h3 class="font-bold text-base mb-4">{{ editingTeamId() ? ('common.edit' | t) : ('common.create' | t) }} {{ 'config.teams.title' | t }}</h3>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="fieldset-label text-xs">{{ 'config.teams.name' | t }}</label>
+          <input class="input input-sm input-bordered w-full" [placeholder]="'config.teams.placeholderName' | t" [ngModel]="editingTeamId() ? editingTeamName() : createTeamName()" (ngModelChange)="editingTeamId() ? editingTeamName.set($event) : createTeamName.set($event)" />
+        </div>
+        <div>
+          <label class="fieldset-label text-xs">{{ 'config.teams.display' | t }}</label>
+          <input class="input input-sm input-bordered w-full" [placeholder]="'config.teams.placeholderDisplay' | t" [ngModel]="editingTeamId() ? editingTeamDisplayName() : createTeamDisplayName()" (ngModelChange)="editingTeamId() ? editingTeamDisplayName.set($event) : createTeamDisplayName.set($event)" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="fieldset-label text-xs">{{ 'config.teams.flag' | t }}</label>
+            <input class="input input-sm input-bordered w-full" placeholder="⚽" [ngModel]="editingTeamId() ? editingTeamFlag() : createTeamFlag()" (ngModelChange)="editingTeamId() ? editingTeamFlag.set($event) : createTeamFlag.set($event)" />
+          </div>
+          <div>
+            <label class="fieldset-label text-xs">{{ 'config.teams.color' | t }}</label>
+            <input type="color" class="input input-sm input-bordered w-full p-1" [ngModel]="editingTeamId() ? editingTeamColor() : createTeamColor()" (ngModelChange)="editingTeamId() ? editingTeamColor.set($event) : createTeamColor.set($event)" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-action">
+        <button class="btn btn-sm" type="button" (click)="cancelEditTeam()">{{ 'common.cancel' | t }}</button>
+        @if (editingTeamId(); as teamId) {
+          <button class="btn btn-sm btn-primary" type="button" [disabled]="!editingTeamName().trim()" (click)="saveEditTeam(teamId)">{{ 'common.save' | t }}</button>
+        } @else {
+          <button class="btn btn-sm btn-primary" type="button" [disabled]="!createTeamName().trim()" (click)="createTeam()">{{ 'common.create' | t }}</button>
+        }
+      </div>
+    </div>
+    <div class="modal-backdrop" (click)="cancelEditTeam()"></div>
+  </dialog>
+}
 
 @if (deleteTeamId()) {
   <dialog class="modal modal-open" aria-modal="true" aria-label="Confirm delete team">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="deleteTeamId.set(null)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="font-bold text-lg">{{ 'config.confirmDeleteTeam.title' | t }}</h3>
       <p class="py-2 text-sm text-base-content/80">{{ 'config.confirmDeleteTeam.desc' | t }}</p>
       <div class="modal-action">
@@ -145,6 +201,9 @@
 @if (deletePlayerId()) {
   <dialog class="modal modal-open" aria-modal="true" aria-label="Confirm delete player">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="deletePlayerId.set(null)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="font-bold text-lg">{{ 'config.confirmDeletePlayer.title' | t }}</h3>
       <p class="py-2 text-sm text-base-content/80">{{ 'config.confirmDeletePlayer.desc' | t }}</p>
       <div class="modal-action">
@@ -158,6 +217,9 @@
 @if (importConfirmOpen()) {
   <dialog class="modal modal-open" aria-modal="true" aria-label="Confirm import state">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="importConfirmOpen.set(false); importFile.set(null)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="font-bold text-lg">{{ 'config.confirmImport.title' | t }}</h3>
       <p class="py-2 text-sm text-base-content/80">{{ 'config.confirmImport.desc' | t }}</p>
       <div class="modal-action">
@@ -171,11 +233,30 @@
 @if (resetConfirmOpen()) {
   <dialog class="modal modal-open" aria-modal="true" aria-label="Confirm reset championship">
     <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="resetConfirmOpen.set(false)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
       <h3 class="font-bold text-lg">{{ 'config.confirmReset.title' | t }}</h3>
       <p class="py-2 text-sm text-base-content/80">{{ 'config.confirmReset.desc' | t }}</p>
       <div class="modal-action">
         <button class="btn" type="button" (click)="resetConfirmOpen.set(false)">{{ 'common.cancel' | t }}</button>
         <button class="btn btn-error" type="button" (click)="reset()">{{ 'common.reset' | t }}</button>
+      </div>
+    </div>
+  </dialog>
+}
+
+@if (sampleDataConfirmOpen()) {
+  <dialog class="modal modal-open" aria-modal="true" aria-label="Confirm load sample data">
+    <div class="modal-box">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" [title]="'common.close' | t" (click)="sampleDataConfirmOpen.set(false)">
+        <lucide-angular [img]="closeIcon" [size]="16" aria-hidden="true" />
+      </button>
+      <h3 class="font-bold text-lg">{{ 'sampleData.confirmTitle' | t }}</h3>
+      <p class="py-2 text-sm text-base-content/80">{{ 'sampleData.confirmDesc' | t }}</p>
+      <div class="modal-action">
+        <button class="btn" type="button" (click)="sampleDataConfirmOpen.set(false)">{{ 'common.cancel' | t }}</button>
+        <button class="btn btn-primary" type="button" (click)="loadSampleData()">{{ 'sampleData.btn' | t }}</button>
       </div>
     </div>
   </dialog>

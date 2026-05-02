@@ -3,6 +3,29 @@
     <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'ranking.empty' | t }}</div>
   } @else {
     <app-ranking-table [rows]="store.rankingTable()" />
+
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-base">{{ 'ranking.bestAttackTitle' | t }}</h3>
+          @if (bestAttack(); as row) {
+            <p class="text-lg font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</p>
+            <p class="text-sm text-base-content/80">{{ 'ranking.bestAttackValue' | t: { goals: row.goalsFor } }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-base">{{ 'ranking.bestDefenseTitle' | t }}</h3>
+          @if (bestDefense(); as row) {
+            <p class="text-lg font-semibold">{{ row.teamFlag || '⚽' }} {{ row.teamName }}</p>
+            <p class="text-sm text-base-content/80">{{ 'ranking.bestDefenseValue' | t: { goals: row.goalsAgainst } }}</p>
+          }
+        </div>
+      </div>
+    </div>
+
     <app-scorers-ranking [rows]="store.scorersRanking()" />
     <app-cards-ranking [rows]="store.cardsRanking()" />
   }

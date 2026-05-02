@@ -11,8 +11,9 @@ function getScore(fixture: Fixture): { home: number; away: number } {
 
 @Injectable({ providedIn: 'root' })
 export class RankingService {
-  computeTable(state: ChampionshipState): RankingRow[] {
+  computeTable(state: ChampionshipState, fixtures: Fixture[]): RankingRow[] {
     const rows = state.teams.map((team) => ({
+      position: 0,
       teamId: team.id,
       teamName: team.displayName || team.name,
       teamFlag: team.flag,
@@ -31,7 +32,7 @@ export class RankingService {
     }));
 
     const map = new Map(rows.map((row) => [row.teamId, row]));
-    const finished = state.fixtures.filter((fixture) => fixture.status === 'finished');
+    const finished = fixtures.filter((fixture) => fixture.status === 'finished');
 
     for (const fixture of finished) {
       const home = map.get(fixture.homeTeamId);
@@ -85,11 +86,12 @@ export class RankingService {
       row.effectiveness = maxPoints === 0 ? 0 : Number(((row.points / maxPoints) * 100).toFixed(2));
     }
 
-    return rows.sort((a, b) => this.compareRows(a, b, state.config.rankingCriteria));
+    const sorted = rows.sort((a, b) => this.compareRows(a, b, state.config.rankingCriteria));
+    return this.applyPositions(sorted, (current, previous) => this.isTableTie(current, previous, state.config.rankingCriteria));
   }
 
-  computeScorers(state: ChampionshipState): ScorerRankingRow[] {
-    const finishedFixtures = state.fixtures.filter((fixture) => fixture.status === 'finished');
+  computeScorers(state: ChampionshipState, fixtures: Fixture[]): ScorerRankingRow[] {
+    const finishedFixtures = fixtures.filter((fixture) => fixture.status === 'finished');
     const scoreMap = new Map<string, number>();
     let ownGoals = 0;
 
@@ -112,6 +114,7 @@ export class RankingService {
       if (player) {
         const team = state.teams.find((entry) => entry.id === player.teamId);
         rows.push({
+          position: 0,
           teamId: player.teamId,
           teamName: team?.displayName || team?.name || 'Unknown team',
           teamFlag: team?.flag,
@@ -122,6 +125,7 @@ export class RankingService {
         const [teamId, scorerName] = key.split(':');
         const team = state.teams.find((entry) => entry.id === teamId);
         rows.push({
+          position: 0,
           teamId,
           teamName: team?.displayName || team?.name || 'Unknown team',
           teamFlag: team?.flag,
@@ -135,6 +139,7 @@ export class RankingService {
 
     if (ownGoals > 0) {
       rows.push({
+        position: 0,
         teamId: null,
         teamName: 'All teams',
         scorerName: 'Own goals',
@@ -143,11 +148,11 @@ export class RankingService {
       });
     }
 
-    return rows;
+    return this.applyPositions(rows, (current, previous) => current.goals === previous.goals);
   }
 
-  computeCards(state: ChampionshipState): CardsRankingRow[] {
-    const finishedFixtures = state.fixtures.filter((fixture) => fixture.status === 'finished');
+  computeCards(state: ChampionshipState, fixtures: Fixture[]): CardsRankingRow[] {
+    const finishedFixtures = fixtures.filter((fixture) => fixture.status === 'finished');
     const cardsMap = new Map<string, { teamId: string; playerName: string; yellowCards: number; redCards: number }>();
 
     for (const fixture of finishedFixtures) {
@@ -177,6 +182,7 @@ export class RankingService {
       const team = state.teams.find((entry) => entry.id === teamId);
 
       rows.push({
+        position: 0,
         teamId,
         teamName: team?.displayName || team?.name || 'Unknown team',
         teamFlag: team?.flag,
@@ -187,12 +193,13 @@ export class RankingService {
       });
     }
 
-    return rows.sort((a, b) => b.totalCards - a.totalCards || b.redCards - a.redCards || a.playerName.localeCompare(b.playerName));
+    const sorted = rows.sort((a, b) => b.totalCards - a.totalCards || b.redCards - a.redCards || a.playerName.localeCompare(b.playerName));
+    return this.applyPositions(sorted, (current, previous) => current.totalCards === previous.totalCards && current.redCards === previous.redCards);
   }
 
-  playerGoals(state: ChampionshipState, playerId: string): number {
+  playerGoals(fixtures: Fixture[], playerId: string): number {
     let total = 0;
-    for (const fixture of state.fixtures) {
+    for (const fixture of fixtures) {
       if (fixture.status !== 'finished') {
         continue;
       }
@@ -235,5 +242,60 @@ export class RankingService {
     }
 
     return a.teamName.localeCompare(b.teamName);
+  }
+
+  private applyPositions<T extends { position: number }>(rows: T[], isTie: (current: T, previous: T) => boolean): T[] {
+    let currentPosition = 1;
+    for (let index = 0; index < rows.length; index += 1) {
+      if (index > 0 && !isTie(rows[index], rows[index - 1])) {
+        currentPosition = index + 1;
+      }
+      rows[index].position = currentPosition;
+    }
+    return rows;
+  }
+
+  private isTableTie(a: RankingRow, b: RankingRow, criteria: RankingCriterion[]): boolean {
+    for (const criterion of criteria) {
+      switch (criterion.field) {
+        case 'points':
+          if (a.points !== b.points) {
+            return false;
+          }
+          break;
+        case 'victories':
+          if (a.victories !== b.victories) {
+            return false;
+          }
+          break;
+        case 'goalDifference':
+          if (a.goalDifference !== b.goalDifference) {
+            return false;
+          }
+          break;
+        case 'goalsFor':
+          if (a.goalsFor !== b.goalsFor) {
+            return false;
+          }
+          break;
+        case 'goalsAgainst':
+          if (a.goalsAgainst !== b.goalsAgainst) {
+            return false;
+          }
+          break;
+        case 'gamesPlayed':
+          if (a.gamesPlayed !== b.gamesPlayed) {
+            return false;
+          }
+          break;
+        case 'teamName':
+          if (a.teamName !== b.teamName) {
+            return false;
+          }
+          break;
+      }
+    }
+
+    return true;
   }
 }
