@@ -1,0 +1,25 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded square background -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#06040f"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!--
+    Lucide trophy on a 24×24 viewBox, scaled to 320×320 and centred at (256, 240).
+    scale = 320/24 ≈ 13.33
+    translate = (256 - 160, 240 - 160) = (96, 80)
+  -->
+  <g transform="translate(96,80) scale(13.33)"
+     stroke="#facc15" stroke-width="1.5" fill="none"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 9H4a2 2 0 0 1-2-2V5h4"/>
+    <path d="M18 9h2a2 2 0 0 0 2-2V5h-4"/>
+    <path d="M8 21h8"/>
+    <path d="M12 17v4"/>
+    <path d="M8 3h8v8a4 4 0 0 1-8 0Z"/>
+  </g>
+</svg>
