@@ -1,0 +1,65 @@
+<div class="min-h-screen bg-base-200 text-base-content">
+  <header class="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100 px-3 py-0">
+    <div class="mx-auto flex w-full max-w-7xl items-center">
+      <nav [attr.aria-label]="'aria.primaryNavigation' | t">
+        <ul class="menu menu-horizontal menu-sm gap-1 px-0">
+          @for (item of navItems; track item.path) {
+            <li>
+              <a [routerLink]="item.path" routerLinkActive="menu-active">{{ item.label | t }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-1">
+        <button
+          class="btn btn-ghost btn-sm btn-circle"
+          type="button"
+          (click)="requestGenerateFixtures()"
+          [attr.aria-label]="'aria.generateFixtures' | t"
+          [title]="'aria.generateFixtures' | t"
+          [disabled]="!store.canGenerateFixtures()"
+        >
+          <lucide-angular [img]="refreshIcon" [size]="16" aria-hidden="true" />
+        </button>
+
+        <a
+          class="btn btn-ghost btn-sm btn-circle"
+          routerLink="/config"
+          [attr.aria-label]="'aria.openConfiguration' | t"
+          [title]="'aria.openConfiguration' | t"
+        >
+          <lucide-angular [img]="cogIcon" [size]="16" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast toast-top toast-end z-50">
+    @for (item of toast.toasts(); track item.id) {
+      <div class="alert flex items-start gap-2" [class.alert-info]="item.type === 'info'" [class.alert-success]="item.type === 'success'" [class.alert-warning]="item.type === 'warning'" [class.alert-error]="item.type === 'error'">
+        <span class="text-sm">{{ item.text }}</span>
+        <button class="btn btn-ghost btn-xs btn-circle ml-1" type="button" (click)="toast.dismiss(item.id)" [attr.aria-label]="'aria.dismissToast' | t">
+          <lucide-angular [img]="closeIcon" [size]="14" aria-hidden="true" />
+        </button>
+      </div>
+    }
+  </div>
+
+  <main class="mx-auto w-full max-w-7xl p-4 sm:p-5 lg:p-6">
+    <router-outlet />
+  </main>
+</div>
+
+@if (regenerateConfirmOpen()) {
+  <dialog class="modal modal-open" aria-modal="true" [attr.aria-label]="'aria.confirmRegenerateFixtures' | t">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">{{ 'shell.regenerate.title' | t }}</h3>
+      <p class="py-2 text-sm text-base-content/80">{{ 'shell.regenerate.description' | t }}</p>
+      <div class="modal-action">
+        <button class="btn" type="button" (click)="regenerateConfirmOpen.set(false)">{{ 'common.cancel' | t }}</button>
+        <button class="btn btn-warning" type="button" (click)="generateFixtures(true)">{{ 'shell.regenerate.confirm' | t }}</button>
+      </div>
+    </div>
+  </dialog>
+}

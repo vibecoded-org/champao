@@ -1,0 +1,26 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title text-base">{{ 'ranking.scorersTitle' | t }}</h3>
+    @if (rows().length === 0) {
+      <div class="rounded-box border border-base-300 bg-base-100 p-3 text-sm text-base-content/80">{{ 'ranking.noGoals' | t }}</div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr><th>#</th><th>{{ 'common.team' | t }}</th><th>{{ 'common.player' | t }}</th><th>{{ 'common.goals' | t }}</th></tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.teamName + row.scorerName; let i = $index) {
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.teamFlag || '' }} {{ row.teamName }}</td>
+                <td>{{ row.scorerName }}</td>
+                <td>{{ row.goals }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

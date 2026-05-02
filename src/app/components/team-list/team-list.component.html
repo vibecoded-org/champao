@@ -1,0 +1,26 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title text-base">{{ 'config.teams.title' | t }}</h3>
+    @if (teams().length === 0) {
+      <div class="rounded-box border border-base-300 bg-base-100 p-3 text-sm text-base-content/80">{{ 'config.teams.empty' | t }}</div>
+    } @else {
+      <div class="space-y-2">
+        @for (team of teams(); track team.id) {
+          <div class="flex items-center justify-between rounded-box border border-base-300 p-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">{{ team.flag || '⚽' }}</span>
+              <div>
+                <p class="font-medium">{{ team.displayName || team.name }}</p>
+                <p class="text-xs text-base-content/70">{{ team.name }}</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-sm" type="button" (click)="edit.emit(team)">{{ 'common.edit' | t }}</button>
+              <button class="btn btn-sm btn-error btn-outline" type="button" (click)="remove.emit(team.id)">{{ 'common.delete' | t }}</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

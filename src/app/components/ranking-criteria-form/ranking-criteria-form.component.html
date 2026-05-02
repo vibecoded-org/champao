@@ -1,0 +1,40 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body gap-3">
+    <div>
+      <h3 class="card-title text-base">{{ 'criteria.title' | t }}</h3>
+      <p class="text-sm text-base-content/70">{{ 'criteria.description' | t }}</p>
+    </div>
+
+    <fieldset class="fieldset rounded-box border border-base-300 p-4">
+      <legend class="fieldset-legend">{{ 'criteria.order' | t }}</legend>
+
+      <div class="mb-3 flex flex-col gap-2 sm:flex-row">
+        <select #fieldToAdd class="select select-sm select-bordered w-full sm:max-w-xs">
+          @for (field of availableFields; track field) {
+            @if (isAvailable(field)) {
+              <option [value]="field">{{ labels[field] | t }}</option>
+            }
+          }
+        </select>
+        <button class="btn btn-sm btn-primary" type="button" (click)="addCriterion(fieldToAdd.value)">{{ 'criteria.add' | t }}</button>
+      </div>
+
+      <div cdkDropList class="space-y-2" (cdkDropListDropped)="drop($event)">
+        @for (criterion of criteria(); track criterion.field; let i = $index) {
+          <div cdkDrag class="flex items-center justify-between rounded-box border border-base-300 bg-base-100 p-3">
+            <div class="flex items-center gap-2">
+              <span class="cursor-move text-base-content/70" aria-hidden="true">☰</span>
+              <span>{{ labels[criterion.field] | t }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-sm btn-outline" type="button" (click)="toggleDirection(i)">
+                {{ criterion.direction === 'asc' ? ('criteria.asc' | t) : ('criteria.desc' | t) }}
+              </button>
+              <button class="btn btn-sm btn-error btn-outline" type="button" [disabled]="criteria().length <= 1" (click)="removeCriterion(i)">{{ 'criteria.remove' | t }}</button>
+            </div>
+          </div>
+        }
+      </div>
+    </fieldset>
+  </div>
+</div>

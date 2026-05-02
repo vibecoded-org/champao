@@ -1,0 +1,33 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body p-0">
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>#</th><th>{{ 'common.team' | t }}</th><th>GP</th><th>Pts</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>YC</th><th>RC</th><th>{{ 'common.cards' | t }}</th><th>Eff%</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.teamId; let i = $index) {
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.teamFlag || '⚽' }} {{ row.teamName }}</td>
+              <td>{{ row.gamesPlayed }}</td>
+              <td>{{ row.points }}</td>
+              <td>{{ row.victories }}</td>
+              <td>{{ row.draws }}</td>
+              <td>{{ row.losses }}</td>
+              <td>{{ row.goalsFor }}</td>
+              <td>{{ row.goalsAgainst }}</td>
+              <td>{{ row.goalDifference }}</td>
+              <td>{{ row.yellowCards }}</td>
+              <td>{{ row.redCards }}</td>
+              <td>{{ row.totalCards }}</td>
+              <td>{{ row.effectiveness }}%</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

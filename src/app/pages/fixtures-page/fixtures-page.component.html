@@ -1,0 +1,47 @@
+<div class="space-y-4">
+  @if (store.fixturesByRound().length === 0) {
+    <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'fixtures.empty' | t }}</div>
+  } @else {
+    <div class="space-y-4">
+      @for (round of store.fixturesByRound(); track round[0]) {
+        <app-fixture-round
+          [round]="round[0]"
+          [label]="roundLabel(round[0])"
+          [fixtures]="round[1]"
+          [teamsMap]="teamsMap()"
+          [suspendedCountByFixtureId]="suspendedCountByFixtureId()"
+          (openFixture)="openFixture($event)"
+          (openSuspensions)="openSuspensionsForFixture($event)"
+        />
+      }
+    </div>
+  }
+
+  <app-match-modal
+    [fixture]="selectedFixture()"
+    [allFixtures]="store.fixtures()"
+    [format]="store.config().format"
+    [cupConfig]="store.config().cup"
+    [teamsMap]="teamsMap()"
+    [players]="store.players()"
+    [suspendedPlayerIds]="suspendedPlayerIds()"
+    [suspendedDetails]="suspendedDetailsForSelectedFixture()"
+    (close)="closeFixture()"
+    (statusChange)="store.setFixtureStatus($event.fixtureId, $event.status)"
+    (addGoal)="onAddGoal($event)"
+    (removeGoal)="store.removeGoal($event.fixtureId, $event.goalId)"
+    (addCard)="onAddCard($event)"
+    (removeCard)="store.removeCard($event.fixtureId, $event.cardId)"
+    (setPenaltyWinner)="onSetPenaltyWinner($event)"
+  />
+</div>
+
+<app-suspended-players-modal
+  [open]="!!suspensionsModalFixtureId()"
+  [players]="store.players()"
+  [suspendedPlayerIds]="suspendedPlayerIdsForModal()"
+  [suspendedDetails]="suspendedDetailsForModal()"
+  [allFixtures]="store.fixtures()"
+  [teamsMap]="teamsMap()"
+  (close)="closeSuspensionsModal()"
+/>

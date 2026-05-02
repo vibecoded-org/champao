@@ -1,0 +1,27 @@
+nationalNumber,position,name,team,nationality,height,weight,age,overall
+1,GK,Walter Benítez,Crystal Palace RB,Argentina,191,93,32,76
+2,RB,Juan Foyth,Villarreal A,Argentina,187,82,27,75
+3,LB,Nicolás Tagliafico,Olympique Lyonnais,Argentina,172,65,33,76
+4,CB,Lisandro Martínez,Manchester United,Argentina,175,77,27,78
+5,DMF,Leandro Paredes,CA Boca Juniors,Argentina,180,75,31,78
+6,CB,Leonardo Balerdi,Olympique de Marseille,Argentina,187,85,26,76
+7,CMF,Rodrigo De Paul,Miami BP,Argentina,180,70,31,81
+8,CMF,Enzo Fernández,Chelsea B,Argentina,178,77,24,81
+9,CF,Julián Alvarez,Madrid Rosas RB,Argentina,170,71,25,81
+10,RWF,Lionel Messi,Miami BP,Argentina,170,67,38,82
+11,AMF,Thiago Almada,Madrid Rosas RB,Argentina,171,62,24,77
+12,GK,Gerónimo Rulli,Olympique de Marseille,Argentina,189,84,33,78
+13,CB,Cristian Romero,Tottenham WB,Argentina,185,79,27,79
+14,CMF,Exequiel Palacios,Bayer 04 Leverkusen,Argentina,177,70,27,78
+15,RWF,Nicolás González,Madrid Rosas RB,Argentina,180,77,27,78
+16,RB,Nahuel Molina,Madrid Rosas RB,Argentina,175,70,27,76
+17,RB,Gonzalo Montiel,CA River Plate,Argentina,175,70,28,76
+18,LB,Marcos Acuña,CA River Plate,Argentina,172,77,34,75
+19,CB,Nicolás Otamendi,SL Benfica,Argentina,183,81,37,77
+20,CMF,Alexis Mac Allister,Liverpool R,Argentina,176,72,27,81
+21,AMF,Giovani Lo Celso,Sevilla Triana VB,Argentina,177,69,29,77
+22,CF,Lautaro Martínez,Internazionale Milano,Argentina,174,79,28,81
+23,GK,Emiliano Martínez,Aston RB,Argentina,195,90,33,80
+24,SS,Paulo Dybala,Roma GR,Argentina,177,75,32,79
+25,LWF,Alejandro Garnacho,Chelsea B,Argentina,180,69,21,77
+26,CB,Germán Pezzella,CA River Plate,Argentina,187,82,34,75

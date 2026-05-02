@@ -1,0 +1,26 @@
+<div class="rounded-box border border-base-300 p-4">
+  <h4 class="mb-1 font-medium">{{ title() }}</h4>
+  <p class="mb-3 text-xs text-base-content/70">{{ 'match.selectPlayer' | t }}</p>
+
+  <fieldset class="fieldset gap-2">
+    <label class="fieldset-label">{{ 'common.player' | t }}</label>
+    <select class="select select-bordered w-full" [ngModel]="selectedScorerId()" (ngModelChange)="selectedScorerId.set($event)">
+      <option value="">{{ 'match.selectPlayer' | t }}</option>
+      @for (scorer of scorers(); track scorer.id) {
+        <option [value]="scorer.id">{{ scorer.name }}</option>
+      }
+    </select>
+
+    <label class="fieldset-label mt-1">{{ 'players.playerName' | t }}</label>
+    <input class="input input-bordered w-full" [placeholder]="'players.playerName' | t" [ngModel]="scorerName()" (ngModelChange)="scorerName.set($event)" />
+
+    @if (showOwnGoal()) {
+      <label class="label mt-1 cursor-pointer justify-start gap-2">
+        <input type="checkbox" class="checkbox checkbox-sm" [ngModel]="ownGoal()" (ngModelChange)="ownGoal.set($event)" />
+        <span class="label-text">{{ 'common.ownGoal' | t }}</span>
+      </label>
+    }
+
+    <button class="btn btn-sm btn-primary mt-2 self-start" type="button" (click)="submit()">{{ 'common.goal' | t }}</button>
+  </fieldset>
+</div>

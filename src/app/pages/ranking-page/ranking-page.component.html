@@ -1,0 +1,9 @@
+<div class="space-y-4">
+  @if (store.teams().length === 0) {
+    <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'ranking.empty' | t }}</div>
+  } @else {
+    <app-ranking-table [rows]="store.rankingTable()" />
+    <app-scorers-ranking [rows]="store.scorersRanking()" />
+    <app-cards-ranking [rows]="store.cardsRanking()" />
+  }
+</div>

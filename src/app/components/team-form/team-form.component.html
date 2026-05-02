@@ -1,0 +1,31 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body gap-4">
+    <div>
+      <h3 class="card-title text-base">{{ 'config.teams.title' | t }}</h3>
+      <p class="text-sm text-base-content/70">{{ 'config.teams.description' | t }}</p>
+    </div>
+
+    <fieldset class="fieldset rounded-box border border-base-300 p-4">
+      <legend class="fieldset-legend">{{ 'config.teams.title' | t }}</legend>
+
+      <label class="fieldset-label">{{ 'config.teams.name' | t }}</label>
+      <input class="input input-bordered w-full" [placeholder]="'config.teams.placeholderName' | t" [ngModel]="name()" (ngModelChange)="name.set($event)" />
+
+      <label class="fieldset-label mt-2">{{ 'config.teams.display' | t }}</label>
+      <input class="input input-bordered w-full" [placeholder]="'config.teams.placeholderDisplay' | t" [ngModel]="displayName()" (ngModelChange)="displayName.set($event)" />
+
+      <div class="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div>
+          <label class="fieldset-label">{{ 'config.teams.flag' | t }}</label>
+          <input class="input input-bordered w-full" placeholder="e.g. 🇧🇷" [ngModel]="flag()" (ngModelChange)="flag.set($event)" />
+        </div>
+        <div>
+          <label class="fieldset-label">{{ 'config.teams.color' | t }}</label>
+          <input type="color" class="input input-bordered w-full p-1" [ngModel]="color()" (ngModelChange)="color.set($event)" />
+        </div>
+      </div>
+    </fieldset>
+
+    <button class="btn btn-primary self-start" type="button" (click)="submit()">{{ 'common.add' | t }}</button>
+  </div>
+</div>

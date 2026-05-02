@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "skills": {
+    "angular-component": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-component/SKILL.md",
+      "computedHash": "2789fdf11e2a70832ce2e6e79954018325a010ebdd45c5d4b1e7bfdf44679b7c"
+    },
+    "angular-developer": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": "skills/dev-skills/angular-developer/SKILL.md",
+      "computedHash": "28eb592b92e5a24c4e3a1c0229a854069f0b8c49bed7b8d2bf6b852812dbe214"
+    },
+    "angular-di": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-di/SKILL.md",
+      "computedHash": "4d3dd9ecceec5642eea118aede824501bdec537b6b8735564a68787ec9617b75"
+    },
+    "angular-directives": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-directives/SKILL.md",
+      "computedHash": "b8ce636215ec0792839fe57c3632b475957bed1ebc404e9a1c54222e0e506bfa"
+    },
+    "angular-forms": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-forms/SKILL.md",
+      "computedHash": "a2e28f7c7c1b9b13f0a8212f403515886f9d23bf13732a355b1f5d01f5cc9d69"
+    },
+    "angular-http": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-http/SKILL.md",
+      "computedHash": "ad8821177929ea09eb94e7fc386d842c76c7f39b6c4d7aa3176ba3596dbabecc"
+    },
+    "angular-new-app": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": "skills/dev-skills/angular-new-app/SKILL.md",
+      "computedHash": "49bd84ab08bd3498c52f476bed48fbb942dc6dbc0925607e84549adbed34bccf"
+    },
+    "angular-routing": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-routing/SKILL.md",
+      "computedHash": "e54b8803da246042525e67effe7ea2a9dc26d5a50e857125793f579c7027aef3"
+    },
+    "angular-signals": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-signals/SKILL.md",
+      "computedHash": "ddedef1232295f200b966778bc36d16fc07d2113ad1dbc73d75d14eb544953bc"
+    },
+    "angular-testing": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-testing/SKILL.md",
+      "computedHash": "66adf01ccb30305e179ce41ff76ded6b60dbb5909bd889cc350cdd13b6933130"
+    },
+    "angular-tooling": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "skillPath": "skills/angular-tooling/SKILL.md",
+      "computedHash": "2a67063279e8ac1b5cf3d9c4e9ed4652508564640c1fc59642857d4f6d20db11"
+    },
+    "daisyui-5": {
+      "source": "nenorrell/skills",
+      "sourceType": "github",
+      "skillPath": "daisyUI5/SKILL.md",
+      "computedHash": "f8f9ede7e46dc79ad3b247f49e992d3cd50ac547124094b6a89ee812e4f5c760"
+    },
+    "reference-compiler-cli": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": ".agent/skills/reference-compiler-cli/SKILL.md",
+      "computedHash": "ce937230b5374cf04b00a76251c3545b3dd43797407ef67ebd44b21229a33bd8"
+    },
+    "reference-core": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": ".agent/skills/reference-core/SKILL.md",
+      "computedHash": "16783417eeebecc4c35f5253872c2155967de10bd3e6b5d26f0bf950ff9347d0"
+    },
+    "reference-signal-forms": {
+      "source": "angular/angular",
+      "sourceType": "github",
+      "skillPath": ".agent/skills/reference-signal-forms/SKILL.md",
+      "computedHash": "c48a51a68ab96d93ce98a7a3b55995208c70436423523ea64ae983a1ffa23020"
+    },
+    "tailwind-css-patterns": {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "sourceType": "github",
+      "skillPath": "plugins/developer-kit-typescript/skills/tailwind-css-patterns/SKILL.md",
+      "computedHash": "6092620c3af955a46ea2b94ca8a40197ac8392e6bbdc8c7515659328b186c770"
+    },
+    "tailwind-design-system": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "computedHash": "988d80e52c67c3692d43cc963b6a048a239895e88b272b061de55370d0f8efc3"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    }
+  }
+}

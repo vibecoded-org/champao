@@ -1,0 +1,68 @@
+<button
+  class="card w-full overflow-hidden border border-base-300/70 bg-base-100 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+  type="button"
+  (click)="open.emit(fixture())"
+>
+  <div class="card-body gap-3 p-4 sm:p-5">
+    <div class="flex items-center justify-between text-xs uppercase tracking-wide text-base-content/60">
+      <span>{{ 'common.round' | t }} {{ fixture().round }} · {{ 'common.match' | t }} {{ fixture().matchNumber }}</span>
+      <span class="badge" [class.badge-success]="fixture().status === 'finished'">{{ fixture().status === 'finished' ? ('fixtures.finished' | t) : ('fixtures.notFinished' | t) }}</span>
+    </div>
+
+    <div class="rounded-box border border-base-300/50 bg-base-200/30 p-3 sm:p-4">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between gap-3">
+          <span class="flex min-w-0 items-center gap-2">
+            <span class="truncate text-base font-semibold sm:text-lg">{{ teamLabel(fixture().homeTeamId) }}</span>
+            @if (yellowCards(fixture().homeTeamId) > 0) {
+              <span class="inline-flex items-end gap-0.5" [attr.aria-label]="yellowCards(fixture().homeTeamId) + ' yellow cards'">
+                @for (_ of cardStack(yellowCards(fixture().homeTeamId)); track $index) {
+                  <span class="h-3.5 w-2 rounded-[2px] bg-warning"></span>
+                }
+              </span>
+            }
+            @if (redCards(fixture().homeTeamId) > 0) {
+              <span class="inline-flex items-end gap-0.5" [attr.aria-label]="redCards(fixture().homeTeamId) + ' red cards'">
+                @for (_ of cardStack(redCards(fixture().homeTeamId)); track $index) {
+                  <span class="h-3.5 w-2 rounded-[2px] bg-error"></span>
+                }
+              </span>
+            }
+          </span>
+          <span class="text-xl font-extrabold tabular-nums sm:text-2xl">{{ score(fixture().homeTeamId) }}</span>
+        </div>
+
+        <div class="h-px w-full bg-base-300/50"></div>
+
+        <div class="flex items-center justify-between gap-3">
+          <span class="flex min-w-0 items-center gap-2">
+            <span class="truncate text-base font-semibold sm:text-lg">{{ teamLabel(fixture().awayTeamId) }}</span>
+            @if (yellowCards(fixture().awayTeamId) > 0) {
+              <span class="inline-flex items-end gap-0.5" [attr.aria-label]="yellowCards(fixture().awayTeamId) + ' yellow cards'">
+                @for (_ of cardStack(yellowCards(fixture().awayTeamId)); track $index) {
+                  <span class="h-3.5 w-2 rounded-[2px] bg-warning"></span>
+                }
+              </span>
+            }
+            @if (redCards(fixture().awayTeamId) > 0) {
+              <span class="inline-flex items-end gap-0.5" [attr.aria-label]="redCards(fixture().awayTeamId) + ' red cards'">
+                @for (_ of cardStack(redCards(fixture().awayTeamId)); track $index) {
+                  <span class="h-3.5 w-2 rounded-[2px] bg-error"></span>
+                }
+              </span>
+            }
+          </span>
+          <span class="text-xl font-extrabold tabular-nums sm:text-2xl">{{ score(fixture().awayTeamId) }}</span>
+        </div>
+      </div>
+    </div>
+
+    @if (suspendedCount() > 0) {
+      <div class="flex items-center justify-end">
+        <button class="badge badge-outline badge-warning cursor-pointer" type="button" (click)="$event.stopPropagation(); openSuspensions.emit(fixture())">
+          {{ i18n.translate('fixtures.suspensions', { count: suspendedCount() }) }}
+        </button>
+      </div>
+    }
+  </div>
+</button>

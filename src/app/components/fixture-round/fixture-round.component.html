@@ -1,0 +1,16 @@
+<section class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title">{{ label() || (('common.round' | t) + ' ' + round()) }}</h3>
+    <div class="grid gap-3 md:grid-cols-2">
+      @for (fixture of fixtures(); track fixture.id) {
+        <app-fixture-card
+          [fixture]="fixture"
+          [teamsMap]="teamsMap()"
+          [suspendedCount]="suspendedCountByFixtureId()[fixture.id]"
+          (open)="openFixture.emit($event)"
+          (openSuspensions)="openSuspensions.emit($event)"
+        />
+      }
+    </div>
+  </div>
+</section>
