@@ -95,12 +95,16 @@
                 }
               </div>
               <span class="badge badge-outline shrink-0 text-xs" [style.border-color]="team.color || '#1d4ed8'" [style.color]="team.color || '#1d4ed8'">●</span>
-              <button class="btn btn-ghost btn-sm btn-circle shrink-0" type="button" [title]="'common.edit' | t" (click)="startEditTeam(team)">
-                <lucide-angular [img]="pencilIcon" [size]="14" aria-hidden="true" />
-              </button>
-              <button class="btn btn-ghost btn-sm btn-circle shrink-0 text-error" type="button" [title]="'common.delete' | t" (click)="confirmRemoveTeam(team.id)">
-                <lucide-angular [img]="trashIcon" [size]="14" aria-hidden="true" />
-              </button>
+              <div class="tooltip" [attr.data-tip]="'common.edit' | t">
+                <button class="btn btn-ghost btn-sm btn-circle shrink-0" type="button" (click)="startEditTeam(team)">
+                  <lucide-angular [img]="pencilIcon" [size]="14" aria-hidden="true" />
+                </button>
+              </div>
+              <div class="tooltip" [attr.data-tip]="'common.delete' | t">
+                <button class="btn btn-ghost btn-sm btn-circle shrink-0 text-error" type="button" (click)="confirmRemoveTeam(team.id)">
+                  <lucide-angular [img]="trashIcon" [size]="14" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           } @empty {
             <div class="col-span-full rounded-box border border-base-300 p-4 text-center text-sm text-base-content/70">{{ 'config.teams.empty' | t }}</div>

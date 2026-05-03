@@ -39,36 +39,48 @@
         <section class="rounded-box border border-base-300 p-3">
           <h4 class="mb-3 text-sm font-semibold truncate">{{ teamLabel(currentFixture.homeTeamId) }}</h4>
           <div class="flex flex-wrap gap-2">
-            <button class="btn btn-primary btn-sm" type="button" [title]="'common.goal' | t" (click)="openPicker(currentFixture.homeTeamId, 'goal')">
-              <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
-            </button>
-            <button class="btn btn-warning btn-sm" type="button" [title]="'match.yellowCard' | t" (click)="openPicker(currentFixture.homeTeamId, 'yellow')">
-              <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
-            </button>
-            <button class="btn btn-error btn-sm" type="button" [title]="'match.redCard' | t" (click)="openPicker(currentFixture.homeTeamId, 'red')">
-              <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
-            </button>
+            <div class="tooltip" [attr.data-tip]="'common.goal' | t">
+              <button class="btn btn-primary btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'goal')">
+                <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
+              </button>
+            </div>
+            <div class="tooltip" [attr.data-tip]="'match.yellowCard' | t">
+              <button class="btn btn-warning btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'yellow')">
+                <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
+              </button>
+            </div>
+            <div class="tooltip" [attr.data-tip]="'match.redCard' | t">
+              <button class="btn btn-error btn-sm" type="button" (click)="openPicker(currentFixture.homeTeamId, 'red')">
+                <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
+              </button>
+            </div>
           </div>
         </section>
 
         <section class="rounded-box border border-base-300 p-3">
           <h4 class="mb-3 text-sm font-semibold truncate">{{ teamLabel(currentFixture.awayTeamId) }}</h4>
           <div class="flex flex-wrap gap-2">
-            <button class="btn btn-primary btn-sm" type="button" [title]="'common.goal' | t" (click)="openPicker(currentFixture.awayTeamId, 'goal')">
-              <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
-            </button>
-            <button class="btn btn-warning btn-sm" type="button" [title]="'match.yellowCard' | t" (click)="openPicker(currentFixture.awayTeamId, 'yellow')">
-              <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
-            </button>
-            <button class="btn btn-error btn-sm" type="button" [title]="'match.redCard' | t" (click)="openPicker(currentFixture.awayTeamId, 'red')">
-              <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
-              <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
-            </button>
+            <div class="tooltip" [attr.data-tip]="'common.goal' | t">
+              <button class="btn btn-primary btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'goal')">
+                <lucide-angular [img]="goalIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'common.goal' | t }}</span>
+              </button>
+            </div>
+            <div class="tooltip" [attr.data-tip]="'match.yellowCard' | t">
+              <button class="btn btn-warning btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'yellow')">
+                <lucide-angular [img]="yellowCardIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'match.yellowCard' | t }}</span>
+              </button>
+            </div>
+            <div class="tooltip" [attr.data-tip]="'match.redCard' | t">
+              <button class="btn btn-error btn-sm" type="button" (click)="openPicker(currentFixture.awayTeamId, 'red')">
+                <lucide-angular [img]="redCardIcon" [size]="16" aria-hidden="true" />
+                <span class="hidden sm:inline">{{ 'match.redCard' | t }}</span>
+              </button>
+            </div>
           </div>
         </section>
       </div>
@@ -83,9 +95,11 @@
               @for (goal of currentFixture.goals; track goal.id) {
                 <div class="flex items-center justify-between gap-2 rounded-box border border-base-300 p-2">
                   <span class="min-w-0 truncate text-sm">{{ teamLabel(goal.teamId) }} – {{ goal.isOwnGoal ? ('common.ownGoal' | t) : playerLabel(goal.playerId, goal.playerName) }}</span>
-                  <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" [title]="'match.remove' | t" (click)="removeGoal.emit({ fixtureId: currentFixture.id, goalId: goal.id })">
-                    <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
-                  </button>
+                  <div class="tooltip tooltip-left" [attr.data-tip]="'match.remove' | t">
+                    <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" (click)="removeGoal.emit({ fixtureId: currentFixture.id, goalId: goal.id })">
+                      <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
               }
             </div>
@@ -104,9 +118,11 @@
                     {{ teamLabel(card.teamId) }} – {{ playerLabel(card.playerId, card.playerName) }}
                     <span class="badge ml-1" [class.badge-warning]="card.cardType === 'yellow'" [class.badge-error]="card.cardType === 'red'">{{ cardTypeLabel(card.cardType) }}</span>
                   </span>
-                  <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" [title]="'match.remove' | t" (click)="removeCard.emit({ fixtureId: currentFixture.id, cardId: card.id })">
-                    <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
-                  </button>
+                  <div class="tooltip tooltip-left" [attr.data-tip]="'match.remove' | t">
+                    <button class="btn btn-ghost btn-xs btn-circle shrink-0 text-error" type="button" (click)="removeCard.emit({ fixtureId: currentFixture.id, cardId: card.id })">
+                      <lucide-angular [img]="removeIcon" [size]="14" aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
               }
             </div>
@@ -143,13 +159,17 @@
 
       <div class="mb-3 flex items-center gap-2">
         <input class="input input-sm input-bordered flex-1" [placeholder]="'match.searchPlayer' | t" [ngModel]="playerSearch()" (ngModelChange)="playerSearch.set($event)" />
-        <button class="btn btn-sm btn-circle btn-outline btn-primary shrink-0" type="button" (click)="newPlayerOpen.set(true)" [attr.aria-label]="'match.newPlayer' | t" [title]="'match.newPlayer' | t">
-          <lucide-angular [img]="addPlayerIcon" [size]="14" aria-hidden="true" />
-        </button>
-        @if (selectedAction() === 'goal') {
-          <button class="btn btn-sm btn-circle btn-outline btn-warning shrink-0" type="button" (click)="chooseOwnGoal()" [attr.aria-label]="'common.ownGoal' | t" [title]="'common.ownGoal' | t">
-            <lucide-angular [img]="ownGoalIcon" [size]="14" aria-hidden="true" />
+        <div class="tooltip" [attr.data-tip]="'match.newPlayer' | t">
+          <button class="btn btn-sm btn-circle btn-outline btn-primary shrink-0" type="button" (click)="newPlayerOpen.set(true)" [attr.aria-label]="'match.newPlayer' | t">
+            <lucide-angular [img]="addPlayerIcon" [size]="14" aria-hidden="true" />
           </button>
+        </div>
+        @if (selectedAction() === 'goal') {
+          <div class="tooltip" [attr.data-tip]="'common.ownGoal' | t">
+            <button class="btn btn-sm btn-circle btn-outline btn-warning shrink-0" type="button" (click)="chooseOwnGoal()" [attr.aria-label]="'common.ownGoal' | t">
+              <lucide-angular [img]="ownGoalIcon" [size]="14" aria-hidden="true" />
+            </button>
+          </div>
         }
       </div>
 

@@ -42,12 +42,16 @@
               <div class="flex items-center gap-2 rounded-box border border-base-300 bg-base-100 px-3 py-2">
                 <input #renameValue class="input input-sm input-bordered flex-1 min-w-0" [value]="player.name" />
                 <span class="badge badge-outline shrink-0 text-xs tabular-nums">{{ playerGoals()[player.id] }} ⚽</span>
-                <button class="btn btn-ghost btn-sm btn-circle shrink-0" type="button" [title]="'common.save' | t" (click)="renamePlayer.emit({ playerId: player.id, name: renameValue.value })">
-                  <lucide-angular [img]="saveIcon" [size]="14" aria-hidden="true" />
-                </button>
-                <button class="btn btn-ghost btn-sm btn-circle shrink-0 text-error" type="button" [title]="'common.delete' | t" (click)="removePlayer.emit(player.id)">
-                  <lucide-angular [img]="trashIcon" [size]="14" aria-hidden="true" />
-                </button>
+                <div class="tooltip" [attr.data-tip]="'common.save' | t">
+                  <button class="btn btn-ghost btn-sm btn-circle shrink-0" type="button" (click)="renamePlayer.emit({ playerId: player.id, name: renameValue.value })">
+                    <lucide-angular [img]="saveIcon" [size]="14" aria-hidden="true" />
+                  </button>
+                </div>
+                <div class="tooltip" [attr.data-tip]="'common.delete' | t">
+                  <button class="btn btn-ghost btn-sm btn-circle shrink-0 text-error" type="button" (click)="removePlayer.emit(player.id)">
+                    <lucide-angular [img]="trashIcon" [size]="14" aria-hidden="true" />
+                  </button>
+                </div>
               </div>
             } @empty {
               <div class="rounded-box border border-base-300 bg-base-100 p-3 text-sm text-base-content/70">{{ 'players.noPlayersForTeam' | t }}</div>

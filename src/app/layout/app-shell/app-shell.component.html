@@ -14,40 +14,43 @@
         <ul class="flex items-center gap-1 px-0">
           @for (item of navItems; track item.path) {
             <li>
-              <a
-                [routerLink]="item.path"
-                routerLinkActive="btn-primary"
-                class="btn btn-ghost btn-sm btn-circle"
-                [title]="item.label | t"
-                [attr.aria-label]="item.label | t"
-              >
-                <lucide-angular [img]="item.icon" [size]="16" aria-hidden="true" />
-              </a>
+              <div class="tooltip tooltip-bottom" [attr.data-tip]="item.label | t">
+                <a
+                  [routerLink]="item.path"
+                  routerLinkActive="btn-primary"
+                  class="btn btn-ghost btn-sm btn-circle"
+                  [attr.aria-label]="item.label | t"
+                >
+                  <lucide-angular [img]="item.icon" [size]="16" aria-hidden="true" />
+                </a>
+              </div>
             </li>
           }
         </ul>
       </nav>
 
       <div class="ml-auto flex items-center gap-1">
-        <button
-          class="btn btn-ghost btn-sm btn-circle"
-          type="button"
-          (click)="requestGenerateFixtures()"
-          [attr.aria-label]="'aria.generateFixtures' | t"
-          [title]="'aria.generateFixtures' | t"
-          [disabled]="!store.canGenerateFixtures()"
-        >
-          <lucide-angular [img]="refreshIcon" [size]="16" aria-hidden="true" />
-        </button>
+        <div class="tooltip tooltip-bottom" [attr.data-tip]="'aria.generateFixtures' | t">
+          <button
+            class="btn btn-ghost btn-sm btn-circle"
+            type="button"
+            (click)="requestGenerateFixtures()"
+            [attr.aria-label]="'aria.generateFixtures' | t"
+            [disabled]="!store.canGenerateFixtures()"
+          >
+            <lucide-angular [img]="refreshIcon" [size]="16" aria-hidden="true" />
+          </button>
+        </div>
 
-        <a
-          class="btn btn-ghost btn-sm btn-circle"
-          routerLink="/config"
-          [attr.aria-label]="'aria.openConfiguration' | t"
-          [title]="'aria.openConfiguration' | t"
-        >
-          <lucide-angular [img]="cogIcon" [size]="16" aria-hidden="true" />
-        </a>
+        <div class="tooltip tooltip-bottom" [attr.data-tip]="'aria.openConfiguration' | t">
+          <a
+            class="btn btn-ghost btn-sm btn-circle"
+            routerLink="/config"
+            [attr.aria-label]="'aria.openConfiguration' | t"
+          >
+            <lucide-angular [img]="cogIcon" [size]="16" aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -56,9 +59,11 @@
     @for (item of toast.toasts(); track item.id) {
       <div class="alert flex items-start gap-2" [class.alert-info]="item.type === 'info'" [class.alert-success]="item.type === 'success'" [class.alert-warning]="item.type === 'warning'" [class.alert-error]="item.type === 'error'">
         <span class="text-sm">{{ item.text }}</span>
-        <button class="btn btn-ghost btn-xs btn-circle ml-1" type="button" (click)="toast.dismiss(item.id)" [attr.aria-label]="'aria.dismissToast' | t">
-          <lucide-angular [img]="closeIcon" [size]="14" aria-hidden="true" />
-        </button>
+        <div class="tooltip tooltip-left" [attr.data-tip]="'aria.dismissToast' | t">
+          <button class="btn btn-ghost btn-xs btn-circle ml-1" type="button" (click)="toast.dismiss(item.id)" [attr.aria-label]="'aria.dismissToast' | t">
+            <lucide-angular [img]="closeIcon" [size]="14" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     }
   </div>
