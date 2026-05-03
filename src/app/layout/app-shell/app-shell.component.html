@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-base-200 text-base-content">
-  <header class="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100 px-3 py-0">
-    <div class="mx-auto flex w-full max-w-7xl items-center gap-3">
+  <header class="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100 py-0">
+    <div class="mx-auto flex w-full max-w-7xl items-center gap-3 px-3 sm:px-4 lg:px-6">
       @if (store.config().mode === 'both') {
         <label class="fieldset-label sr-only" for="scope-selector">{{ 'scope.title' | t }}</label>
         <select id="scope-selector" class="select select-bordered select-sm w-44" [value]="selectedScope()" (change)="setScope($any($event.target).value)">
