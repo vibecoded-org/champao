@@ -106,7 +106,14 @@ bun run build:gh-pages
 
 Outputs directly to `docs/` at the repo root, which GitHub Pages can serve from the `main` branch. Enable it under **Settings → Pages → Source: Deploy from a branch → `main` / `docs`**.
 
-> **Note:** `baseHref` is set to `./` (relative). If your app uses deep Angular routes and you see 404s on page refresh, set `baseHref` to your repository path (e.g. `/champao/`) in `angular.json` under the `gh-pages` configuration.
+> **Note:** `baseHref` is set to `./` (relative). If you deploy to a project site (`username.github.io/repo`), set `baseHref` to `/repo-name/` in `angular.json` under the `gh-pages` configuration.
+
+### Configuring GitHub Pages (step-by-step)
+
+1. **Build** — run `bun run build:gh-pages` to populate the `docs/` folder and commit it.
+2. **Enable Pages** — go to your repo on GitHub → **Settings → Pages → Source: Deploy from a branch** → choose `main` branch → folder `/docs` → **Save**.
+3. **SPA routing** — deep routes (`/fixtures`, `/ranking`, …) would normally 404 on direct access or refresh. This is already handled: `public/404.html` re-encodes the path and `index.html` restores it before Angular boots. No extra configuration needed.
+4. **Custom domain (optional)** — add your domain in **Settings → Pages → Custom domain**, then set `baseHref` back to `"/"` in the `gh-pages` configuration.
 
 ### Tests
 

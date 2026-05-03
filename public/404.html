@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Champao</title>
+  <script>
+    // SPA redirect trick for GitHub Pages.
+    // Encodes the full path into a query string and redirects to the root,
+    // where index.html will decode it and restore the real URL via history API.
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.host + l.pathname.split('/').slice(0, 1).join('/') +
+      '/?p=' + encodeURIComponent(l.pathname + l.search) + (l.hash || '')
+    );
+  </script>
+</head>
+<body></body>
+</html>
