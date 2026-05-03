@@ -47,7 +47,10 @@ const TRANSLATIONS: Record<AppLanguage, Dictionary> = {
     'common.no': 'Nao',
     'common.bye': 'Folga',
 
-    'fixtures.empty': 'Nenhuma partida ainda. Gere partidas para comecar.',
+    'fixtures.empty': 'Nenhuma partida gerada ainda.',
+    'fixtures.emptyCanGenerate': 'Clique em gerar para criar a tabela de partidas.',
+    'fixtures.emptyNoTeams': 'Adicione pelo menos 2 times nas configurações para poder gerar as partidas.',
+    'fixtures.goToConfig': 'Ir para configurações',
     'fixtures.suspensions': 'Suspensões: {count}',
     'fixtures.finished': 'Finalizada',
     'fixtures.notFinished': 'Não finalizada',
@@ -291,7 +294,10 @@ const TRANSLATIONS: Record<AppLanguage, Dictionary> = {
     'common.no': 'No',
     'common.bye': 'BYE',
 
-    'fixtures.empty': 'No fixtures yet. Generate fixtures to start.',
+    'fixtures.empty': 'No fixtures generated yet.',
+    'fixtures.emptyCanGenerate': 'Click generate to create the match schedule.',
+    'fixtures.emptyNoTeams': 'Add at least 2 teams in settings to be able to generate fixtures.',
+    'fixtures.goToConfig': 'Go to settings',
     'fixtures.suspensions': 'Suspensions: {count}',
     'fixtures.finished': 'Finished',
     'fixtures.notFinished': 'Not finished',

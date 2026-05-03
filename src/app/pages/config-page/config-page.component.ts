@@ -20,8 +20,8 @@ const SAMPLE_STATE_JSON = JSON.stringify({
     cup: { homeAndAway: true, singleElimination: true, uniqueFinalMatch: false, drawTiebreaker: 'penalties' },
     discipline: { yellowCardsThreshold: 2, yellowSuspensionGames: 1, redCardsThreshold: 1, redSuspensionGames: 1 },
     rankingCriteria: [
-      { field: 'points', direction: 'asc' }, { field: 'victories', direction: 'asc' },
-      { field: 'goalDifference', direction: 'asc' }, { field: 'goalsFor', direction: 'asc' }
+      { field: 'points', direction: 'desc' }, { field: 'victories', direction: 'desc' },
+      { field: 'goalDifference', direction: 'desc' }, { field: 'goalsFor', direction: 'desc' }
     ]
   },
   teams: [

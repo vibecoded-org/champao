@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { LucideAngularModule, RefreshCw } from 'lucide-angular';
 import { FixtureRoundComponent } from '../../components/fixture-round/fixture-round.component';
 import { MatchModalComponent } from '../../components/match-modal/match-modal.component';
 import { SuspendedPlayersModalComponent } from '../../components/suspended-players-modal/suspended-players-modal.component';
 import { CardType, Fixture } from '../../core/models/fixture.model';
 import { ChampionshipStoreService, SuspensionCause } from '../../core/services/championship-store.service';
 import { I18nService } from '../../core/services/i18n.service';
+import { ToastService } from '../../core/services/toast.service';
 import { TranslatePipe } from '../../core/pipes/t.pipe';
 import { CompetitionScope } from '../../core/models/championship.model';
 
 @Component({
   selector: 'app-fixtures-page',
-  imports: [FixtureRoundComponent, MatchModalComponent, SuspendedPlayersModalComponent, TranslatePipe],
+  imports: [FixtureRoundComponent, MatchModalComponent, SuspendedPlayersModalComponent, TranslatePipe, RouterLink, LucideAngularModule],
   templateUrl: './fixtures-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -111,7 +114,21 @@ export class FixturesPageComponent {
     return this.store.playerSuspensionDetailsForFixture(scope, fixture.id);
   });
 
+  protected readonly refreshIcon = RefreshCw;
+  private readonly toast = inject(ToastService);
+
   constructor(protected readonly store: ChampionshipStoreService) {}
+
+  protected generateFixtures(): void {
+    const scope = this.selectedCompetitionScope();
+    if (!scope) return;
+    const result = this.store.generateFixtures(scope, false);
+    if (result.ok) {
+      this.toast.show(this.i18n.translate('toast.fixturesGenerated'), 'success');
+    } else {
+      this.toast.show(this.i18n.translate('toast.fixturesGenerateFailed'), 'error');
+    }
+  }
 
   protected roundLabel(round: number): string {
     const scope = this.selectedCompetitionScope();

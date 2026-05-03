@@ -10,7 +10,23 @@
     </div>
   } @else if (selectedCompetitionScope(); as competitionScope) {
     @if (store.fixturesByRound(competitionScope).length === 0) {
-      <div class="rounded-box border border-base-300 bg-base-100 p-4 text-sm text-base-content/80">{{ 'fixtures.empty' | t }}</div>
+      <div class="rounded-box border border-base-300 bg-base-100 p-8 flex flex-col items-center gap-4 text-center">
+        <lucide-angular [img]="refreshIcon" [size]="40" class="text-base-content/30" aria-hidden="true" />
+        <div>
+          <p class="font-semibold text-base-content">{{ 'fixtures.empty' | t }}</p>
+          <p class="mt-1 text-sm text-base-content/60">
+            {{ (store.canGenerateFixtures() ? 'fixtures.emptyCanGenerate' : 'fixtures.emptyNoTeams') | t }}
+          </p>
+        </div>
+        @if (store.canGenerateFixtures()) {
+          <button class="btn btn-primary" type="button" (click)="generateFixtures()">
+            <lucide-angular [img]="refreshIcon" [size]="16" aria-hidden="true" />
+            {{ 'aria.generateFixtures' | t }}
+          </button>
+        } @else {
+          <a class="btn btn-outline" routerLink="/config">{{ 'fixtures.goToConfig' | t }}</a>
+        }
+      </div>
     } @else {
       <div class="space-y-3 sm:space-y-4">
         @for (group of fixturesByRoundWithLegs(); track group.round) {

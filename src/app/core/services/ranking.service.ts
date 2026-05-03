@@ -237,7 +237,7 @@ export class RankingService {
       }
 
       if (compare !== 0) {
-        return compare * -direction;
+        return compare * direction;
       }
     }
 

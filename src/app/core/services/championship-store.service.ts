@@ -14,10 +14,10 @@ function uid(prefix: string): string {
 }
 
 const defaultCriteria: RankingCriterion[] = [
-  { field: 'points', direction: 'asc' },
-  { field: 'victories', direction: 'asc' },
-  { field: 'goalDifference', direction: 'asc' },
-  { field: 'goalsFor', direction: 'asc' }
+  { field: 'points', direction: 'desc' },
+  { field: 'victories', direction: 'desc' },
+  { field: 'goalDifference', direction: 'desc' },
+  { field: 'goalsFor', direction: 'desc' }
 ];
 
 const defaultState: ChampionshipState = {
