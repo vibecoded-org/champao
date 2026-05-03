@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-base-200 text-base-content">
   <header class="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100 py-0 ">
-    <div class="mx-auto flex w-full max-w-7xl items-center gap-3 px-3 sm:px-4 lg:px-6 overflow-hidden">
+    <div class="mx-auto flex w-full max-w-7xl items-center gap-3 px-3 sm:px-4 lg:px-6  justify-between">
       @if (store.config().mode === 'both') {
         <label class="fieldset-label sr-only" for="scope-selector">{{ 'scope.title' | t }}</label>
         <select id="scope-selector" class="select select-bordered select-sm w-44" [value]="selectedScope()" (change)="setScope($any($event.target).value)">
@@ -14,7 +14,7 @@
         <ul class="flex items-center gap-1 px-0">
           @for (item of navItems; track item.path) {
             <li>
-              <div class="tooltip tooltip-bottom" [attr.data-tip]="item.label | t">
+              <div class="lg:tooltip tooltip-bottom" [attr.data-tip]="item.label | t">
                 <a
                   [routerLink]="item.path"
                   routerLinkActive="btn-primary"
@@ -29,8 +29,8 @@
         </ul>
       </nav>
 
-      <div class="flex justify-between items-center gap-1">
-        <div class="tooltip tooltip-bottom" [attr.data-tip]="'aria.generateFixtures' | t">
+      <div class="flex  items-center gap-1 flex-1 justify-end">
+        <div class="lg:tooltip tooltip-bottom" [attr.data-tip]="'aria.generateFixtures' | t">
           <button
             class="btn btn-ghost btn-sm btn-circle"
             type="button"
@@ -42,7 +42,7 @@
           </button>
         </div>
 
-        <div class="tooltip tooltip-bottom" [attr.data-tip]="'aria.openConfiguration' | t">
+        <div class="lg:tooltip tooltip-bottom" [attr.data-tip]="'aria.openConfiguration' | t">
           <a
             class="btn btn-ghost btn-sm btn-circle"
             routerLink="/config"
@@ -59,7 +59,7 @@
     @for (item of toast.toasts(); track item.id) {
       <div class="alert flex items-start gap-2" [class.alert-info]="item.type === 'info'" [class.alert-success]="item.type === 'success'" [class.alert-warning]="item.type === 'warning'" [class.alert-error]="item.type === 'error'">
         <span class="text-sm">{{ item.text }}</span>
-        <div class="tooltip tooltip-left" [attr.data-tip]="'aria.dismissToast' | t">
+        <div class="lg:tooltip tooltip-left" [attr.data-tip]="'aria.dismissToast' | t">
           <button class="btn btn-ghost btn-xs btn-circle ml-1" type="button" (click)="toast.dismiss(item.id)" [attr.aria-label]="'aria.dismissToast' | t">
             <lucide-angular [img]="closeIcon" [size]="14" aria-hidden="true" />
           </button>
